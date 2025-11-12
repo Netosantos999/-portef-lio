@@ -1,0 +1,27 @@
+# Framework principal
+streamlit==1.39.0
+
+# Manipulação de dados
+pandas==2.2.2
+numpy==1.26.4
+
+# Exportação de relatórios e arquivos
+openpyxl==3.1.5
+python-docx==1.1.0
+reportlab==4.2.2
+pypandoc==1.13
+
+# Datas e horários
+python-dateutil==2.9.0.post0
+
+# Banco de dados (caso use SQLite)
+sqlalchemy==2.0.32
+
+# Segurança / senhas (caso use autenticação)
+bcrypt==4.2.0
+
+# Upload e manipulação de imagens (caso use fotos de colaboradores)
+Pillow==10.4.0
+
+# Outros utilitários
+requests==2.32.3
