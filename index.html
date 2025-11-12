@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Francelino Neto Santos — Portfólio Profissional</title>
+  <meta name="description" content="Portfólio profissional de Francelino Neto Santos — Mestre de Obras, Técnico em Eletrotécnica e Tecnólogo em Redes, com foco em automação, gestão e tecnologia aplicada a obras." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{--accent:#f97316}
+    body{background:#0f172a;color:#f1f5f9}
+    .section{max-width:1100px;margin:auto;padding:4rem 1.5rem}
+    h1,h2,h3{font-weight:700;color:#fff}
+    a{color:var(--accent)}
+    .card{background:#1e293b;border-radius:1rem;padding:2rem;box-shadow:0 4px 30px rgba(0,0,0,0.3)}
+
+    /* Grid de obras */
+    .obra-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
+    .obra-item{position:relative;overflow:hidden;border-radius:1rem;cursor:pointer}
+    .obra-item img{width:100%;height:260px;object-fit:cover;transition:transform 0.4s ease}
+    .obra-item:hover img{transform:scale(1.05)}
+    .obra-caption{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:#fff;padding:0.5rem 1rem;font-size:0.9rem;text-align:center}
+
+    /* Lightbox */
+    #lightbox{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);display:none;align-items:center;justify-content:center;z-index:9999}
+    #lightbox img{max-width:90%;max-height:80%;border-radius:1rem;box-shadow:0 0 20px rgba(0,0,0,0.8)}
+    #lightbox button{position:absolute;top:5%;right:5%;background:none;color:white;font-size:2rem;border:none;cursor:pointer;padding:1rem}
+  </style>
+</head>
+<body class="font-sans">
+  <header class="section flex items-center justify-between">
+  <div class="flex items-center gap-4">
+    <!-- FOTO DE PERFIL -->
+    <img src="fotoperfil.png" alt="Foto de Francelino Neto Santos" class="w-24 h-24 rounded-full border-2 border-orange-500 object-cover">
+    
+    <!-- NOME -->
+    <h1 class="text-2xl font-bold">Francelino Neto Santos</h1>
+  </div>
+
+  <nav class="space-x-6 text-slate-300">
+    <a href="#sobre" class="hover:text-white">Sobre</a>
+    <a href="#experiencia" class="hover:text-white">Experiência</a>
+    <a href="#projetos" class="hover:text-white">Projetos</a>
+    <a href="#galeria" class="hover:text-white">Obras</a>
+    <a href="#contato" class="hover:text-white">Contato</a>
+  </nav>
+</header>
+
+
+  <section class="section text-center">
+    <h2 class="text-4xl font-extrabold mb-4">Mestre de Obras • Técnico em Eletrotécnica • Tecnólogo em Redes de Computadores</h2>
+    <p class="text-slate-300 max-w-2xl mx-auto text-lg leading-relaxed">Profissional com experiência em obras de usinas fotovoltaicas (UFV) e subestações elétricas. Atuo na integração entre campo e tecnologia, desenvolvendo sistemas e automações que melhoram o controle, a eficiência e a comunicação nas operações diárias.</p>
+    <div class="mt-6 flex justify-center gap-4">
+      <a href="https://www.linkedin.com/in/francelino-neto-santos-17671b158/" target="_blank" class="bg-orange-500 text-slate-900 font-semibold px-5 py-3 rounded-lg">Perfil LinkedIn</a>
+      <a href="#contato" class="border border-slate-600 px-5 py-3 rounded-lg hover:bg-slate-800">Contato</a>
+    </div>
+  </section>
+
+  <section id="sobre" class="section grid md:grid-cols-2 gap-8 items-start">
+    <div>
+      <h2 class="text-2xl mb-4">Sobre mim</h2>
+      <p class="text-slate-300 leading-relaxed">Sou um profissional apaixonado por inovação prática. Busco aplicar tecnologia para resolver desafios reais de campo, seja com ferramentas digitais próprias ou soluções otimizadas. Acredito que a combinação de <strong>experiência técnica, liderança e aprendizado contínuo</strong> transforma a rotina de obras e gera resultados sustentáveis.</p>
+      <p class="mt-4 text-slate-400 italic">“Foco, determinação e aprendizado são os pilares que me guiam para evoluir com as pessoas e os desafios ao meu redor.”</p>
+    </div>
+
+    <div class="card">
+      <h3 class="text-xl font-semibold mb-2">Áreas de atuação</h3>
+      <ul class="space-y-2 text-slate-300">
+        <li>• Usinas Fotovoltaicas (UFV)</li>
+        <li>• Subestações Elétricas</li>
+        <li>• Gestão de equipes e produtividade no Canteiro de Obras</li>
+        <li>• Desenvolvimento de sistemas de controle de ponto e relatórios técnicos com Python + Streamlit</li>
+        <li>• Automação de processos e integração com Google Cloud</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="experiencia" class="section">
+    <h2 class="text-2xl mb-6">Experiência Profissional</h2>
+    <div class="space-y-6">
+      <div class="card"><h3 class="font-semibold text-lg">Mestre de Obras — Setor de Energia / Construção<br>
+      <li>Usinas UFV</li>
+      <li>Subestações de Alta tensão</li>
+     </h3><p class="text-slate-300 mt-2">Atuação direta em obras de grande porte, coordenando equipes e operacionais, garantindo o cumprimento de cronogramas, qualidade e segurança.</p></div>
+      <div class="card"><h3 class="font-semibold text-lg">Desenvolvedor de Ferramentas Internas</h3><p class="text-slate-300 mt-2">Desenvolvimento de sistemas web para controle de ponto, relatórios de frequência, auditoria e dashboards internos com Python + Streamlit.</p></div>
+    </div>
+  </section>
+
+  <!-- Galeria de Sistemas -->
+<section id="sistemas" class="section">
+  <h2 class="text-2xl mb-6 text-center">Galeria de Sistemas de Gestão de Obras</h2>
+
+  <!-- Swiper Container -->
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide"><img src="obras_imagens/sistema1.png" alt="Sistema 1"></div>
+      <div class="swiper-slide"><img src="obras_imagens/sistema2.png" alt="Sistema 2"></div>
+      <div class="swiper-slide"><img src="obras_imagens/sistema3.png" alt="Sistema 3"></div>
+      <div class="swiper-slide"><img src="obras_imagens/sistema5.png" alt="Sistema 5"></div>
+      <div class="swiper-slide"><img src="obras_imagens/sistema6.png" alt="Sistema 6"></div>
+      <div class="swiper-slide"><img src="obras_imagens/sistema7.png" alt="Sistema 7"></div>
+      <div class="swiper-slide"><img src="obras_imagens/sistema8.png" alt="Sistema 8"></div>
+      <div class="swiper-slide"><img src="obras_imagens/sistema9.png" alt="Sistema 9"></div>
+      <div class="swiper-slide"><img src="obras_imagens/sistema10.png" alt="Sistema 10"></div>
+      <div class="swiper-slide"><img src="obras_imagens/sistema11.png" alt="Sistema 11"></div>
+      <div class="swiper-slide"><img src="obras_imagens/sistema12.png" alt="Sistema 12"></div>
+      <div class="swiper-slide"><img src="obras_imagens/sistema13.png" alt="Sistema 13"></div>
+      <div class="swiper-slide"><img src="obras_imagens/sistema13.png" alt="Sistema 14"></div>
+      <div class="swiper-slide"><img src="obras_imagens/sistema13.png" alt="Sistema 15"></div>
+      <div class="swiper-slide"><img src="obras_imagens/sistema13.png" alt="Sistema 16"></div>
+
+
+    </div>
+
+    <!-- Botões -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-pagination"></div>
+  </div>
+</section>
+
+<!-- Swiper CSS + JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+  new Swiper(".mySwiper", {
+    slidesPerView: 3,
+    spaceBetween: 20,
+    loop: true,
+    autoplay: {
+      delay: 2500,
+      disableOnInteraction: false,
+    },
+    pagination: { el: ".swiper-pagination", clickable: true },
+    navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+    breakpoints: {
+      1024: { slidesPerView: 3 },
+      768: { slidesPerView: 2 },
+      0: { slidesPerView: 1 },
+    }
+  });
+</script>
+
+<style>
+.swiper-slide img {
+  width: 100%;
+  border-radius: 1rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  transition: transform 0.3s;
+}
+.swiper-slide img:hover {
+  transform: scale(1.05);
+}
+</style>
+
+  <!-- Galeria de Obras -->
+  <section id="galeria" class="section">
+    <h2 class="text-2xl mb-6">Galeria de Obras</h2>
+    <div class="obra-grid">
+      <div class="obra-item"><img src="obras_imagens/mda.jpeg" alt="Obra 16"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
+      <div class="obra-item"><img src="obras_imagens/mda2.jpeg" alt="Obra 17"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
+      <div class="obra-item"><img src="obras_imagens/mda3.jpeg" alt="Obra 18"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
+      <div class="obra-item"><img src="obras_imagens/mda4.jpeg" alt="Obra 19"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
+      <div class="obra-item"><img src="obras_imagens/mda5.jpeg" alt="Obra 20"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
+      <div class="obra-item"><img src="obras_imagens/mda6.jpeg" alt="Obra 21"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
+      <div class="obra-item"><img src="obras_imagens/mda7.jpeg" alt="Obra 22"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
+      <div class="obra-item"><img src="obras_imagens/mda8.jpeg" alt="Obra 23"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
+      <div class="obra-item"><img src="obras_imagens/mda9.jpeg" alt="Obra 24"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
+      <div class="obra-item"><img src="obras_imagens/1760033386574.jpg" alt="Obra 1"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
+      <div class="obra-item"><img src="obras_imagens/1760033386574.jpg" alt="Obra 1"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
+      <div class="obra-item"><img src="obras_imagens/1760033386574.jpg" alt="Obra 1"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
+      <div class="obra-item"><img src="obras_imagens/1760033386574.jpg" alt="Obra 1"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
+      <div class="obra-item"><img src="obras_imagens/1760033386574.jpg" alt="Obra 1"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
+      <div class="obra-item"><img src="obras_imagens/1760785775477.jpg" alt="Obra 2"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
+      <div class="obra-item"><img src="obras_imagens/1731364026391.jpg" alt="Obra 3"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
+      <div class="obra-item"><img src="obras_imagens/1732696131294.jpg" alt="Obra 4"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
+      <div class="obra-item"><img src="obras_imagens/1733610118252.jpg" alt="Obra 5"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
+      <div class="obra-item"><img src="obras_imagens/1733961674391.jpg" alt="Obra 6"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
+      <div class="obra-item"><img src="obras_imagens/1734423532532.jpg" alt="Obra 7"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
+      <div class="obra-item"><img src="obras_imagens/1734888372345.jpg" alt="Obra 8"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
+      <div class="obra-item"><img src="obras_imagens/1734888374473.jpg" alt="Obra 9"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
+      <div class="obra-item"><img src="obras_imagens/1736532576665.jpg" alt="Obra 10"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
+      <div class="obra-item"><img src="obras_imagens/bomjardin.jpeg" alt="Obra 11"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
+      <div class="obra-item"><img src="obras_imagens/bomjardin2.jpeg" alt="Obra 12"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
+      <div class="obra-item"><img src="obras_imagens/bomjardin3.jpeg" alt="Obra 13"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
+      <div class="obra-item"><img src="obras_imagens/bomjardin4.jpeg" alt="Obra 14"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
+      <div class="obra-item"><img src="obras_imagens/bomjardin5.jpeg" alt="Obra 15"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
+
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div id="lightbox">
+    <button onclick="closeLightbox()">✕</button>
+    <img id="lightboxImage" src="" alt="">
+  </div>
+
+  <section id="contato" class="section text-center">
+    <h2 class="text-2xl mb-4">Entre em contato</h2>
+    <p class="text-slate-300 mb-6">Quer me conhecer melhor e ver meus resultados? Vamos conversar 👋.</p>
+    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=francelinotees@gmail.com" 
+   target="_blank" 
+   class="inline-block bg-orange-500 text-slate-900 font-semibold px-6 py-3 rounded-lg">
+   Enviar e-mail
+</a>
+
+  </section>
+
+  <footer class="text-center text-slate-500 py-6 text-sm">
+    © <span id="year"></span> Francelino Neto Santos — Inovação e Tecnologia em Obras
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent=new Date().getFullYear();
+
+    // Lightbox simples
+    const lightbox=document.getElementById('lightbox');
+    const lightboxImg=document.getElementById('lightboxImage');
+    const obras=document.querySelectorAll('.obra-item img');
+
+    obras.forEach(img=>{
+      img.addEventListener('click',()=>{
+        lightboxImg.src=img.src;
+        lightbox.style.display='flex';
+      });
+    });
+
+    function closeLightbox(){lightbox.style.display='none';}
+  </script>
+</body>
+</html>
