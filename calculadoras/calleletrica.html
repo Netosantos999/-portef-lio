@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Calculadora NBR 5410 — Dimensionamento de Cabos (Cobre PVC 70°C)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{--accent:#0f62fe}
+    body{background:#f8fafc;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto; color:#0f172a}
+    .glass{background:rgba(255,255,255,0.85);backdrop-filter:blur(6px);border:1px solid rgba(15,23,42,0.06)}
+    .kbd{font-family:ui-monospace,Menlo,monospace;font-size:0.85rem;background:#f3f4f6;padding:.15rem .4rem;border-radius:4px}
+  </style>
+</head>
+<body class="antialiased">
+  <div class="min-h-screen flex items-start justify-center py-12 px-4">
+    <div class="w-full max-w-6xl">
+      <header class="mb-6 flex items-center justify-between">
+        <div>
+          <h1 class="text-2xl font-semibold">Calculadora NBR 5410 — Dimensionamento de Cabos (Cobre / PVC 70°C)</h1>
+          <p class="text-sm text-gray-600">Tabela 36 — Capacidade de condução de corrente. Valores e fatores segundo NBR 5410 (2004).</p>
+        </div>
+        <div class="text-sm text-gray-500 text-right">
+          Autor: <strong>Francelino Neto Santos</strong><br>Versão: 1.1 (Tabela 36 integrada)
+        </div>
+      </header>
+
+      <main class="glass rounded-2xl shadow-lg p-6 md:p-8">
+        <div class="grid gap-6 md:grid-cols-[1fr_420px]">
+          <!-- Form -->
+          <section>
+            <h2 class="text-lg font-medium mb-3">Dados de Entrada</h2>
+            <form id="form" class="space-y-3">
+              <div class="grid gap-3 md:grid-cols-3">
+                <label class="text-sm">Potência ativa (W)
+                  <input id="power" type="number" min="0" class="mt-1 w-full px-3 py-2 rounded border" placeholder="Ex: 5000" required>
+                </label>
+                <label class="text-sm">Fases
+                  <select id="phase" class="mt-1 w-full px-3 py-2 rounded border">
+                    <option value="1">Monofásico</option>
+                    <option value="2">Bifásico</option>
+                    <option value="3" selected>Trifásico</option>
+                  </select>
+                </label>
+                <label class="text-sm">Tensão
+                  <select id="voltage" class="mt-1 w-full px-3 py-2 rounded border"></select>
+                </label>
+              </div>
+
+              <div class="grid gap-3 md:grid-cols-3">
+                <label class="text-sm">Comprimento (m)
+                  <input id="length" type="number" min="0" value="30" class="mt-1 w-full px-3 py-2 rounded border">
+                </label>
+
+                <label class="text-sm">Método / Instalação
+                  <select id="installation" class="mt-1 w-full px-3 py-2 rounded border">
+                    <option value="B1">B1 — Eletroduto embutido / canaleta (método B1)</option>
+                    <option value="B2">B2 — Eletroduto aparente / canaleta (método B2)</option>
+                    <option value="C">C — Cabos em bandeja / leito (método C)</option>
+                  </select>
+                </label>
+
+                <label class="text-sm">Material
+                  <div class="mt-1 flex items-center gap-3">
+                    <label><input type="radio" name="material" value="cu" checked> Cobre</label>
+                    <label><input type="radio" name="material" value="al"> Alumínio</label>
+                  </div>
+                </label>
+              </div>
+
+              <div class="grid gap-3 md:grid-cols-3">
+                <label class="text-sm">Temperatura ambiente (°C)
+                  <input id="temperature" type="number" value="30" class="mt-1 w-full px-3 py-2 rounded border">
+                </label>
+                <label class="text-sm">Número de circuitos agrupados
+                  <input id="grouping" type="number" min="1" value="1" class="mt-1 w-full px-3 py-2 rounded border">
+                </label>
+                <label class="text-sm">Queda de tensão máxima (%)
+                  <input id="maxDropPercent" type="number" min="0.5" step="0.1" value="4" class="mt-1 w-full px-3 py-2 rounded border">
+                </label>
+              </div>
+
+              <div class="flex gap-3">
+                <button type="submit" class="flex-1 px-4 py-2 rounded bg-[color:var(--accent)] text-white">Calcular</button>
+                <button id="clear" type="button" class="px-4 py-2 rounded border">Limpar</button>
+              </div>
+
+              <p class="text-xs text-gray-500">Observação: valores extraídos da NBR 5410 (Tabela 36) — uso para projeto preliminar. Consulte norma completa para projeto executivo. :contentReference[oaicite:3]{index=3}</p>
+            </form>
+          </section>
+
+          <!-- Results -->
+          <aside class="bg-white rounded-xl p-4 shadow-inner">
+            <h2 class="text-lg font-medium mb-3">Resultados</h2>
+            <div id="resultsArea" class="text-sm text-gray-700">
+              <div class="text-center py-8 text-gray-400" id="placeholder">Preencha os dados e clique em <span class="kbd">Calcular</span></div>
+            </div>
+            <div id="extrainfo" class="mt-3 text-xs text-gray-500 hidden">
+              <p><strong>Fontes:</strong> NBR 5410 — Tabela 36 (capacidade), tabelas 42–45 (fatores de agrupamento) e guias técnicos. :contentReference[oaicite:4]{index=4}</p>
+            </div>
+          </aside>
+        </div>
+      </main>
+
+      <footer class="mt-4 text-xs text-gray-500">© 2025 — Calculadora NBR5410 • Desenvolvido por Francelino Neto Santos</footer>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    // ---------- CONSTANTES / TABELA NBR 5410 (Tabela 36) - cobre, PVC 70°C ----------
+    // Valores extraídos da Tabela 36 (NBR 5410). Colunas usadas: B1, B2, C (coluna para 2 ou 3 condutores carregados).
+    // Os números abaixo são as AMPACIDADES (A) para cada seção (mm²).
+    // Obs: estou incluindo as seções mais usadas. Se quiser eu adiciono até 1000 mm².
+    const NBR_TABLE = {
+      // estrutura: NBR_TABLE[method]['2' or '3'][section_mm2] = ampacidade (A)
+      B1: {
+        '2': { '1.5':17.5,'2.5':24,'4':32,'6':41,'10':57,'16':76,'25':101,'35':125,'50':151,'70':192,'95':232,'120':269,'150':309,'185':353,'240':415 },
+        '3': { '1.5':15.5,'2.5':21,'4':28,'6':36,'10':50,'16':68,'25':89,'35':110,'50':134,'70':171,'95':207,'120':239,'150':275,'185':314,'240':370 }
+      },
+      B2: {
+        '2': { '1.5':16.5,'2.5':23,'4':30,'6':38,'10':52,'16':69,'25':90,'35':111,'50':133,'70':168,'95':201,'120':232,'150':265,'185':300,'240':351 },
+        '3': { '1.5':15,'2.5':20,'4':27,'6':34,'10':46,'16':62,'25':80,'35':99,'50':118,'70':149,'95':179,'120':206,'150':236,'185':268,'240':313 }
+      },
+      C: {
+        '2': { '1.5':19.5,'2.5':27,'4':36,'6':46,'10':63,'16':85,'25':112,'35':138,'50':168,'70':213,'95':258,'120':299,'150':344,'185':392,'240':461 },
+        '3': { '1.5':17.5,'2.5':24,'4':32,'6':41,'10':57,'16':76,'25':96,'35':119,'50':144,'70':184,'95':223,'120':259,'150':299,'185':341,'240':403 }
+      }
+    };
+
+    // Resistividade (rho) ohm·mm²/m at 20°C
+    const RHO = { cu: 0.01724, al: 0.0282 };
+    // Coeficiente temp (ºC^-1) (apenas para referência quando for necessário ajustar resistência)
+    const ALPHA = { cu: 0.00393, al: 0.00403 };
+
+    // Fatores de correção simplificados (para interface rápida)
+    // Para precisão total, aplicar as tabelas 42-45 (já referenciadas na norma)
+    function tempFactor(tempC){
+      // values from NBR (table of k1) approximated via interpolation
+      const t = Math.max(20, Math.min(60, tempC));
+      if (t <= 30) return 1.0;
+      if (t <= 35) return 0.96;
+      if (t <= 40) return 0.91;
+      if (t <= 45) return 0.87;
+      if (t <= 50) return 0.82;
+      if (t <= 55) return 0.78;
+      return 0.75;
+    }
+
+    function groupingFactor(nCircuits){
+      // Aplicação simplificada: para levantamento rápido uso valores conservadores extraídos de NBR (tabelas 42-45)
+      if (nCircuits <= 1) return 1.0;
+      if (nCircuits <= 3) return 0.8;
+      if (nCircuits <= 6) return 0.7;
+      return 0.6; // muitos circuitos agrupados -> projetar com cuidado
+    }
+
+    // UI: preencher tensões e listeners
+    const phaseEl = document.getElementById('phase');
+    const voltageEl = document.getElementById('voltage');
+
+    function setVoltageOptions(phase){
+      voltageEl.innerHTML = '';
+      if (phase === 1){
+        addOpt('127','127 V (F-N)');
+        addOpt('220','220 V (F-F)');
+      } else if (phase === 2){
+        addOpt('220','220 V (Bifásico 220V)');
+        addOpt('380','380 V');
+      } else {
+        addOpt('220-127','220/127 V (trifásico)');
+        addOpt('380','380/220 V (trifásico)');
+      }
+    }
+    function addOpt(val, text){ const o = document.createElement('option'); o.value = val; o.textContent = text; voltageEl.appendChild(o); }
+    setVoltageOptions(3);
+    phaseEl.addEventListener('change', ()=> setVoltageOptions(parseInt(phaseEl.value)));
+
+    // cálculo de corrente
+    function calcCurrent(Pw, phase, voltageVal){
+      let V = (voltageVal === '220-127') ? 127 : parseFloat(voltageVal);
+      if (phase === 1) return Pw / V;
+      if (phase === 2) return Pw / V;
+      return Pw / (Math.sqrt(3) * V);
+    }
+
+    // queda de tensão (V)
+    function voltageDropVolts(I, L, S_mm2, material, phase){
+      const rho = (material === 'cu') ? RHO.cu : RHO.al;
+      const R_per_m = rho / S_mm2;
+      if (phase === 3) return Math.sqrt(3) * I * R_per_m * L;
+      return 2 * I * R_per_m * L;
+    }
+
+    // seleciona bitola usando tabela NBR integradas (método & número de condutores carregados)
+    function selectFromNBR(method, loadedConductors, I, tempC, groupingCount, material, length, maxDropPercent, nominalVoltageForDrop){
+      const methodTable = NBR_TABLE[method];
+      if (!methodTable) return null;
+      const col = String(loadedConductors); // '2' ou '3'
+      const table = methodTable[col];
+      if (!table) return null;
+
+      const ktemp = tempFactor(tempC);
+      const kgroup = groupingFactor(groupingCount);
+
+      // iterar as seções em ordem crescente
+      const sections = Object.keys(table).map(k=>parseFloat(k)).sort((a,b)=>a-b);
+      for(const s of sections){
+        const baseAmp = table[String(s)];
+        const correctedAmp = baseAmp * ktemp * kgroup;
+        if (correctedAmp + 1e-6 < I) continue; // ampacidade insuficiente
+
+        // verificar queda de tensão
+        const vDrop = voltageDropVolts(I, length, s, material, (phaseEl ? parseInt(phaseEl.value) : 3));
+        const vDropPct = (vDrop / nominalVoltageForDrop) * 100;
+        if (vDropPct <= maxDropPercent) {
+          return { s, correctedAmp, vDrop, vDropPct, baseAmp };
+        }
+        // senão, tenta próxima seção
+      }
+
+      // se nenhuma satisfaz ambos, retorna a maior disponível com métricas
+      const maxS = sections[sections.length-1];
+      return { s: maxS, correctedAmp: table[String(maxS)]*ktemp*kgroup, vDrop: voltageDropVolts(I, length, maxS, material, (phaseEl ? parseInt(phaseEl.value) : 3)), vDropPct: (voltageDropVolts(I, length, maxS, material, (phaseEl ? parseInt(phaseEl.value) : 3))/nominalVoltageForDrop)*100, note:'Nenhuma bitola padrão satisfez ambos critérios (ampacidade corrigida e queda de tensão). Considere cabo paralelo, método alternativo ou projeto executivo.' };
+    }
+
+    // FORM event
+    const form = document.getElementById('form');
+    const resultsArea = document.getElementById('resultsArea');
+    const extrainfo = document.getElementById('extrainfo');
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      resultsArea.innerHTML = '';
+
+      const P = Number(document.getElementById('power').value) || 0;
+      const phase = Number(document.getElementById('phase').value);
+      const voltageVal = document.getElementById('voltage').value;
+      const L = Number(document.getElementById('length').value) || 0;
+      const installation = document.getElementById('installation').value;
+      const material = document.querySelector('input[name="material"]:checked').value; // cu or al
+      const temp = Number(document.getElementById('temperature').value) || 30;
+      const grouping = Number(document.getElementById('grouping').value) || 1;
+      const maxDropPercent = Number(document.getElementById('maxDropPercent').value) || 4;
+
+      const Icalc = calcCurrent(P, phase, voltageVal);
+      if (!isFinite(Icalc) || Icalc <= 0) {
+        resultsArea.innerHTML = '<div class="p-3 rounded bg-red-50 text-red-700">Informe potência e tensão válidas.</div>';
+        return;
+      }
+      const I = Number(Icalc.toFixed(2));
+
+      // número de condutores carregados por circuito: monofásico -> 2; trifásico -> 3
+      const loaded = (phase === 3) ? 3 : 2;
+
+      // nominal voltage reference for drop percentage:
+      const nominalForDrop = (voltageVal === '220-127') ? 220 : Number(voltageVal);
+
+      // selecionar tabela NBR conforme método
+      const sel = selectFromNBR(installation, loaded, I, temp, grouping, material, L, maxDropPercent, nominalForDrop);
+
+      if (!sel) {
+        resultsArea.innerHTML = '<div class="p-3 rounded bg-yellow-50 text-yellow-800">Método de instalação não suportado pela tabela integrada.</div>';
+        return;
+      }
+
+      const recommendedBreaker = Math.ceil(I * 1.25);
+
+      // render results
+      resultsArea.innerHTML = `
+        <div class="border rounded p-3 bg-white">
+          <div class="grid gap-2">
+            <div class="flex justify-between"><span class="text-gray-600">Corrente estimada</span><strong>${I} A</strong></div>
+            <div class="flex justify-between"><span class="text-gray-600">Método (NBR)</span><strong>${installation}</strong></div>
+            <div class="flex justify-between"><span class="text-gray-600">Condutores carregados (N)</span><strong>${loaded}</strong></div>
+            <div class="flex justify-between"><span class="text-gray-600">Material</span><strong>${material === 'cu' ? 'Cobre (PVC 70°C)' : 'Alumínio (PVC 70°C)'}</strong></div>
+          </div>
+        </div>
+
+        <div class="mt-3 border rounded p-3 bg-white">
+          <h3 class="font-medium mb-2">Bitola selecionada</h3>
+          <div class="grid grid-cols-2 gap-2 text-sm">
+            <div>Seção (mm²)</div><div><strong>${sel.s} mm²</strong></div>
+            <div>Ampacidade base (Tabela 36)</div><div>${sel.baseAmp ? sel.baseAmp + ' A' : '—'}</div>
+            <div>Ampacidade corrigida (k_temp × k_group)</div><div><strong>${sel.correctedAmp.toFixed(1)} A</strong></div>
+            <div>Queda de tensão</div><div class="${sel.vDropPct <= maxDropPercent ? 'text-green-600' : 'text-red-600'}"><strong>${sel.vDrop.toFixed(3)} V (${sel.vDropPct.toFixed(2)} %)</strong></div>
+            <div>Disjuntor recomendado (≈ I×1.25)</div><div><strong>${recommendedBreaker} A</strong></div>
+          </div>
+          ${sel.note ? `<p class="text-sm text-yellow-700 mt-2"><strong>Atenção:</strong> ${sel.note}</p>` : ''}
+        </div>
+
+        <div class="mt-3 text-sm text-gray-700 bg-white border rounded p-3">
+          <strong>Detalhes:</strong>
+          <ul class="ml-4 list-disc">
+            <li>Fonte dos valores: NBR 5410 — Tabela 36 (cobre, PVC 70°C). :contentReference[oaicite:5]{index=5}</li>
+            <li>Fatores de temperatura e agrupamento aplicados (tabelas 42–45). Para projeto executivo aplicar tabela completa. :contentReference[oaicite:6]{index=6}</li>
+            <li>Queda de tensão calculada com ρ (Cu = 0.01724 Ω·mm²/m).</li>
+          </ul>
+        </div>
+      `;
+      extrainfo.classList.remove('hidden');
+      resultsArea.scrollIntoView({behavior:'smooth'});
+    });
+
+    document.getElementById('clear').addEventListener('click', function(){
+      form.reset();
+      setVoltageOptions(parseInt(phaseEl.value));
+      resultsArea.innerHTML = '<div class="text-center py-8 text-gray-400" id="placeholder">Preencha os dados e clique em <span class="kbd">Calcular</span></div>';
+      extrainfo.classList.add('hidden');
+    });
+
+  })();
+  </script>
+</body>
+</html>

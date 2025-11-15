@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Calculadora de Obras Civis — Profissional</title>
+
+  <!-- Tailwind CDN (rápido e profissional) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- html2pdf para exportar PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+  <style>
+    /* Tema A — Profissional (azul / cinza / branco) */
+    :root{
+      --primary:#0b5ed7;
+      --primary-600:#0b63d6;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --accent:#0ea5e9;
+      --danger:#ef4444;
+    }
+    body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background: #f3f6fb; color:#0f172a; }
+    .card { background: var(--card); border-radius: 10px; box-shadow: 0 6px 18px rgba(12,20,39,0.06); }
+    .header-bar { background: linear-gradient(90deg,var(--primary), #2b6cb0); color:white; }
+    .muted { color: var(--muted); }
+    .kbd { font-family: ui-monospace,SFMono-Regular,Menlo,monospace; font-size:0.8rem; background:#eef2ff; padding:4px 8px; border-radius:6px; color:var(--primary); }
+    .section-title { font-weight:600; color:#0b3d91; }
+    .mode-badge { display:inline-block;padding:4px 8px;border-radius:6px;background:#eef2ff;color:var(--primary);font-weight:600;font-size:0.85rem; }
+    .result-pre { white-space:pre-wrap; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size:0.95rem; }
+    .small { font-size:0.85rem; color:var(--muted); }
+    /* responsive columns */
+    @media(min-width:1024px){ .grid-main { grid-template-columns: 1fr 420px; } }
+  </style>
+</head>
+<body class="antialiased">
+
+  <div class="max-w-6xl mx-auto p-6">
+    <header class="header-bar rounded-lg card p-4 flex items-center justify-between mb-6">
+      <div>
+        <h1 class="text-xl font-semibold">Calculadora de Obras Civis — Profissional</h1>
+        <p class="small">Cálculos preliminares: concreto, alvenaria, arrimo, revestimento cerâmico e pintura — Tema Profissional (A).</p>
+      </div>
+      <div class="text-right">
+        <div id="modeDisplay" class="mode-badge">Modo: <span id="currentMode">Engenheiro</span></div>
+        <div class="small mt-1">Versão 3.0 • Desenvolvido por Francelino Neto</div>
+      </div>
+    </header>
+
+    <main class="card p-5">
+      <div class="grid gap-6 grid-main">
+
+        <!-- LEFT: Entradas -->
+        <section class="p-4">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="section-title text-lg">Entradas & Seletor</h2>
+            <div>
+              <label class="inline-flex items-center small">
+                <input id="modeToggle" type="checkbox" class="mr-2"> Modo Mestre de Obras
+              </label>
+            </div>
+          </div>
+
+          <div class="border rounded p-3 mb-4">
+            <label class="block small mb-2">Projeto / Obra (opcional)</label>
+            <input id="projectName" type="text" class="w-full p-2 border rounded" placeholder="Nome do projeto">
+          </div>
+
+          <div class="border rounded p-3 mb-4">
+            <h3 class="font-medium mb-2">Selecione o módulo</h3>
+            <div class="grid grid-cols-2 gap-2">
+              <button class="module-btn p-2 rounded border text-sm" data-module="concrete">Concreto</button>
+              <button class="module-btn p-2 rounded border text-sm" data-module="masonry">Alvenaria</button>
+              <button class="module-btn p-2 rounded border text-sm" data-module="retaining">Arrimo</button>
+              <button class="module-btn p-2 rounded border text-sm" data-module="ceramic">Cerâmica</button>
+              <button class="module-btn p-2 rounded border text-sm" data-module="paint">Pintura</button>
+            </div>
+          </div>
+
+          <div id="moduleForms" class="space-y-4">
+            <!-- Concrete form -->
+            <form id="concreteForm" class="module-form p-3 border rounded">
+              <h3 class="font-semibold">Concreto — Volume e Materiais</h3>
+              <div class="grid gap-2 md:grid-cols-2 mt-2">
+                <label class="small">Classe fck:
+                  <select id="fck" class="w-full p-2 border rounded">
+                    <option value="20">C20</option>
+                    <option value="25">C25</option>
+                    <option value="30">C30</option>
+                    <option value="35">C35</option>
+                    <option value="40">C40</option>
+                  </select>
+                </label>
+                <label class="small">Abatimento (slump) mm:
+                  <input id="slump" type="number" class="w-full p-2 border rounded" value="80">
+                </label>
+              </div>
+
+              <div class="grid gap-2 md:grid-cols-3 mt-2">
+                <label class="small">Base (m):
+                  <input id="conc_base" type="number" step="0.01" class="w-full p-2 border rounded" placeholder="L">
+                </label>
+                <label class="small">Largura (m):
+                  <input id="conc_width" type="number" step="0.01" class="w-full p-2 border rounded" placeholder="B">
+                </label>
+                <label class="small">Altura (m):
+                  <input id="conc_height" type="number" step="0.01" class="w-full p-2 border rounded" placeholder="H">
+                </label>
+              </div>
+
+              <div class="grid gap-2 md:grid-cols-3 mt-2">
+                <label class="small">Peças:
+                  <input id="conc_pieces" type="number" min="1" value="1" class="w-full p-2 border rounded">
+                </label>
+                <label class="small">Perdas (%):
+                  <input id="conc_loss" type="number" min="0" value="8" class="w-full p-2 border rounded">
+                </label>
+                <label class="small">Ar incorporado (%):
+                  <input id="conc_air" type="number" min="0" value="0" class="w-full p-2 border rounded">
+                </label>
+              </div>
+
+              <div class="mt-3 flex gap-2">
+                <button type="button" id="calcConcrete" class="px-4 py-2 rounded bg-[color:var(--primary)] text-white">Calcular</button>
+                <button type="button" id="saveConcrete" class="px-4 py-2 rounded border">Salvar</button>
+                <button type="button" id="pdfConcrete" class="px-4 py-2 rounded border">PDF</button>
+              </div>
+            </form>
+
+            <!-- Masonry form -->
+            <form id="masonryForm" class="module-form p-3 border rounded hidden">
+              <h3 class="font-semibold">Alvenaria & Reboco</h3>
+              <div class="grid gap-2 md:grid-cols-2 mt-2">
+                <label class="small">Área da parede (m²):
+                  <input id="masonry_area" type="number" step="0.01" class="w-full p-2 border rounded">
+                </label>
+                <label class="small">Tipo de tijolo:
+                  <select id="masonry_brick" class="w-full p-2 border rounded">
+                    <option value="ceramico">Cerâmico 9x19x19</option>
+                    <option value="concreto">Concreto 14x19x39</option>
+                    <option value="soloCimento">Solo-cimento</option>
+                  </select>
+                </label>
+              </div>
+              <div class="grid gap-2 md:grid-cols-2 mt-2">
+                <label class="small">Espessura junta (mm):
+                  <select id="masonry_junta" class="w-full p-2 border rounded"><option>10</option><option>8</option><option>12</option></select>
+                </label>
+                <label class="small">Traço argamassa:
+                  <select id="masonry_ratio" class="w-full p-2 border rounded"><option>1:3</option><option>1:4</option></select>
+                </label>
+              </div>
+              <div class="mt-3 flex gap-2">
+                <button type="button" id="calcMasonry" class="px-4 py-2 rounded bg-[color:var(--primary)] text-white">Calcular</button>
+                <button type="button" id="saveMasonry" class="px-4 py-2 rounded border">Salvar</button>
+                <button type="button" id="pdfMasonry" class="px-4 py-2 rounded border">PDF</button>
+              </div>
+            </form>
+
+            <!-- Retaining wall form -->
+            <form id="retainingForm" class="module-form p-3 border rounded hidden">
+              <h3 class="font-semibold">Arrimo — Pedra Rachão Argamassada (Preliminar)</h3>
+              <div class="grid gap-2 md:grid-cols-2 mt-2">
+                <label class="small">Comprimento (m):
+                  <input id="ret_len" type="number" step="0.01" class="w-full p-2 border rounded">
+                </label>
+                <label class="small">Altura (m):
+                  <input id="ret_h" type="number" step="0.01" class="w-full p-2 border rounded">
+                </label>
+              </div>
+              <div class="grid gap-2 md:grid-cols-2 mt-2">
+                <label class="small">Espessura base (m):
+                  <input id="ret_base" type="number" step="0.01" value="0.8" class="w-full p-2 border rounded">
+                </label>
+                <label class="small">Traço argamassa:
+                  <select id="ret_ratio" class="w-full p-2 border rounded"><option>1:3</option><option>1:2.5</option></select>
+                </label>
+              </div>
+
+              <div class="mt-3 flex gap-2">
+                <button type="button" id="calcRetaining" class="px-4 py-2 rounded bg-[color:var(--primary)] text-white">Calcular</button>
+                <button type="button" id="saveRetaining" class="px-4 py-2 rounded border">Salvar</button>
+                <button type="button" id="pdfRetaining" class="px-4 py-2 rounded border">PDF</button>
+              </div>
+            </form>
+
+            <!-- Ceramic -->
+            <form id="ceramicForm" class="module-form p-3 border rounded hidden">
+              <h3 class="font-semibold">Revestimento Cerâmico</h3>
+              <div class="grid gap-2 md:grid-cols-2 mt-2">
+                <label class="small">Área (m²):
+                  <input id="cer_area" type="number" step="0.01" class="w-full p-2 border rounded">
+                </label>
+                <label class="small">Tamanho peça (cm):
+                  <select id="cer_tile" class="w-full p-2 border rounded">
+                    <option value="30x30">30x30</option>
+                    <option value="60x60">60x60</option>
+                    <option value="20x60">20x60</option>
+                  </select>
+                </label>
+              </div>
+              <div class="mt-3 flex gap-2">
+                <button type="button" id="calcCeramic" class="px-4 py-2 rounded bg-[color:var(--primary)] text-white">Calcular</button>
+                <button type="button" id="saveCeramic" class="px-4 py-2 rounded border">Salvar</button>
+                <button type="button" id="pdfCeramic" class="px-4 py-2 rounded border">PDF</button>
+              </div>
+            </form>
+
+            <!-- Paint -->
+            <form id="paintForm" class="module-form p-3 border rounded hidden">
+              <h3 class="font-semibold">Pintura</h3>
+              <div class="grid gap-2 md:grid-cols-2 mt-2">
+                <label class="small">Área (m²):
+                  <input id="paint_area" type="number" step="0.01" class="w-full p-2 border rounded">
+                </label>
+                <label class="small">Tipo tinta:
+                  <select id="paint_type" class="w-full p-2 border rounded">
+                    <option value="latex">Látex 10 m²/L</option>
+                    <option value="acrilica">Acrílica 12 m²/L</option>
+                    <option value="textura">Textura 4 m²/L</option>
+                  </select>
+                </label>
+              </div>
+              <div class="mt-3 flex gap-2">
+                <button type="button" id="calcPaint" class="px-4 py-2 rounded bg-[color:var(--primary)] text-white">Calcular</button>
+                <button type="button" id="savePaint" class="px-4 py-2 rounded border">Salvar</button>
+                <button type="button" id="pdfPaint" class="px-4 py-2 rounded border">PDF</button>
+              </div>
+            </form>
+
+          </div>
+        </section>
+
+        <!-- RIGHT: Resultado / Memória / Ações -->
+        <aside class="p-4 border-l">
+          <div class="sticky top-6">
+            <div class="mb-3">
+              <h3 class="font-semibold">Resultado</h3>
+              <div id="output" class="mt-2 card p-3 min-h-[120px]">
+                <div id="outputContent" class="result-pre muted">Nenhum cálculo ainda. Selecione um módulo e clique em Calcular.</div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <h3 class="font-semibold">Memória de Cálculos</h3>
+              <ol id="historyList" class="mt-2 small"></ol>
+              <div class="mt-2 flex gap-2">
+                <button id="clearHistory" class="px-3 py-2 rounded border small">Limpar memória</button>
+                <button id="exportAllPDF" class="px-3 py-2 rounded border small">Exportar tudo (PDF)</button>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <h3 class="font-semibold">Exportar / Salvar</h3>
+              <div class="flex gap-2 mt-2">
+                <button id="exportCSV" class="px-3 py-2 rounded border small">Exportar CSV</button>
+                <button id="saveLocal" class="px-3 py-2 rounded border small">Salvar Local</button>
+                <button id="loadLocal" class="px-3 py-2 rounded border small">Carregar Último</button>
+              </div>
+            </div>
+
+            <div class="mb-3 small muted">
+              <strong>Normas base:</strong> NBR 6118, NBR 12655, NBR 15270, NBR 13753, NBR 14942. Resultados preliminares — valide em projeto executivo.
+            </div>
+
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="text-center small mt-4 text-gray-500">
+      © 2025 — Calculadora de Obras Civis • Desenvolvido por Francelino Neto Santos
+    </footer>
+  </div>
+
+  <!-- SCRIPT: lógica, cálculos e export -->
+  <script>
+  /* ============================
+     Calculadora Profissional — JS
+     - modo Engenheiro / Mestre
+     - módulos: concrete, masonry, retaining, ceramic, paint
+     - export PDF/CSV, salvar local
+     ============================ */
+
+  (function(){
+    // ---------- Helpers ----------
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
+    function fmt(v, d=3){ return (isFinite(v) ? Number(v).toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d}) : '—'); }
+    function nowIso(){ return (new Date()).toISOString(); }
+    function notify(text){ // simple UI feedback inside output area
+      $('#outputContent').textContent = text;
+    }
+    function showOutput(html){
+      $('#outputContent').innerHTML = html;
+    }
+
+    // history (memory) helper
+    function pushHistory(title, data){
+      const key = 'calc_history';
+      let hist = JSON.parse(localStorage.getItem(key) || '[]');
+      hist.unshift({ id: Date.now(), title, data, ts: new Date().toISOString() });
+      // keep last 50
+      hist = hist.slice(0,50);
+      localStorage.setItem(key, JSON.stringify(hist));
+      renderHistory();
+    }
+    function renderHistory(){
+      const key = 'calc_history';
+      const hist = JSON.parse(localStorage.getItem(key) || '[]');
+      const list = $('#historyList'); list.innerHTML = '';
+      hist.forEach(h => {
+        const li = document.createElement('li');
+        li.className = 'mb-2';
+        li.innerHTML = `<strong>${h.title}</strong> <div class="small muted">${(new Date(h.ts)).toLocaleString()}</div>
+                        <div class="mt-1"><button class="px-2 py-1 border small" data-id="${h.id}" onclick="loadHistory(${h.id})">Reabrir</button></div>`;
+        list.appendChild(li);
+      });
+    }
+    window.loadHistory = function(id){
+      const hist = JSON.parse(localStorage.getItem('calc_history') || '[]');
+      const item = hist.find(h=>h.id===id);
+      if(!item){ alert('Registro não encontrado.'); return; }
+      showOutput('<pre class="result-pre">'+JSON.stringify(item.data, null, 2)+'</pre>');
+    };
+
+    // UI init: module buttons
+    $$('.module-btn').forEach(b=>{
+      b.addEventListener('click', (e)=>{
+        $$('.module-form').forEach(f=>f.classList.add('hidden'));
+        const mod = b.dataset.module;
+        $('#'+mod+'Form')?.classList.remove('hidden');
+        // clear output
+        showOutput('Pronto para cálculo: '+b.textContent.trim());
+      });
+    });
+
+    // Mode toggle: Engenheiro (default) / Mestre
+    const modeToggle = $('#modeToggle'), modeDisplay = $('#currentMode');
+    function setMode(isMestre){
+      modeDisplay.textContent = isMestre ? 'Mestre de Obras' : 'Engenheiro';
+      localStorage.setItem('calc_mode', isMestre ? 'mestre' : 'engenheiro');
+      // Show/hide technical details based on mode: here we simply alter memory display verbosity
+    }
+    modeToggle.addEventListener('change', ()=> setMode(modeToggle.checked));
+    (function initMode(){
+      const m = localStorage.getItem('calc_mode') === 'mestre';
+      modeToggle.checked = m; setMode(m);
+    })();
+
+    // ---------- CONCRETO ----------
+    // Mix data (updated conservative consumption per m3, sacks 50kg)
+    const CONCRETE_TABLE = {
+      // fck: {sacksPerM3, sand_m3, gravel_m3, water_l}
+      20: { sacks:6.4, sand:0.50, gravel:0.77, water:190, ratio:'1:2.0:3.0' },
+      25: { sacks:7.2, sand:0.48, gravel:0.74, water:195, ratio:'1:1.7:2.6' },
+      30: { sacks:8.0, sand:0.45, gravel:0.69, water:200, ratio:'1:1.4:2.2' },
+      35: { sacks:8.5, sand:0.43, gravel:0.66, water:205, ratio:'1:1.3:2.0' },
+      40: { sacks:9.0, sand:0.41, gravel:0.63, water:210, ratio:'1:1.2:1.8' }
+    };
+
+    $('#calcConcrete').addEventListener('click', function(){
+      // read inputs
+      const fck = parseInt($('#fck').value,10);
+      const L = parseFloat($('#conc_base').value) || 0;
+      const B = parseFloat($('#conc_width').value) || 0;
+      const H = parseFloat($('#conc_height').value) || 0;
+      const pieces = Math.max(1, parseInt($('#conc_pieces').value,10) || 1);
+      const lossPct = Math.max(0, parseFloat($('#conc_loss').value) || 0);
+      const airPct = Math.max(0, parseFloat($('#conc_air').value) || 0);
+
+      if (L<=0 || B<=0 || H<=0) { alert('Informe dimensões válidas para o concreto.'); return; }
+      const volPiece = L * B * H;
+      const volTotal = volPiece * pieces;
+      const volWithLoss = volTotal * (1 + lossPct/100);
+      const mix = CONCRETE_TABLE[fck] || CONCRETE_TABLE[25];
+
+      // Adjust for air entrainment by reducing effective volume of aggregates slightly (approx)
+      const airFactor = 1 - (airPct/100);
+      const sandComp = volWithLoss * mix.sand * airFactor;
+      const gravelComp = volWithLoss * mix.gravel * airFactor;
+      const sacks = volWithLoss * mix.sacks;
+      const cementKg = sacks * 50;
+      const waterL = volWithLoss * mix.water;
+
+      const result = {
+        module:'Concreto',
+        timestamp: nowIso(),
+        inputs:{ fck, L,B,H, pieces, lossPct, airPct },
+        outputs:{
+          volPiece, volTotal, volWithLoss,
+          sacks: Math.ceil(sacks),
+          cementKg: Math.ceil(cementKg),
+          sandComp, gravelComp, waterL, ratio: mix.ratio
+        }
+      };
+
+      // Render result (detailed)
+      const html = `
+        <div>
+          <div class="font-semibold">Concreto C${fck} — Resultados preliminares</div>
+          <div class="small mt-2">Volume por peça: <strong>${fmt(volPiece,4)}</strong> m³</div>
+          <div class="small">Volume total ( ${pieces} pçs ): <strong>${fmt(volTotal,4)}</strong> m³</div>
+          <div class="small">Volume produção (com ${lossPct}% perdas): <strong>${fmt(volWithLoss,4)}</strong> m³</div>
+          <hr class="my-2">
+          <div class="small">Traço orientativo: <strong>${mix.ratio}</strong></div>
+          <div class="small">Cimento: <strong>${Math.ceil(sacks)} sacos de 50kg ≈ ${Math.ceil(cementKg)} kg</strong></div>
+          <div class="small">Areia (compra, empol. já considerado): <strong>${fmt(sandComp,3)} m³</strong></div>
+          <div class="small">Brita (compra): <strong>${fmt(gravelComp,3)} m³</strong></div>
+          <div class="small">Água estimada: <strong>${fmt(waterL,0)} L</strong></div>
+          <hr class="my-2 small muted"> 
+          <div class="small"><strong>Memória de cálculo:</strong></div>
+          <pre class="result-pre small">${[
+            `V peça = L × B × H = ${L} × ${B} × ${H} = ${volPiece.toFixed(4)} m³`,
+            `V total = V peça × n = ${volPiece.toFixed(4)} × ${pieces} = ${volTotal.toFixed(4)} m³`,
+            `V produção = V total × (1 + perdas) = ${volTotal.toFixed(4)} × ${ (1+lossPct/100).toFixed(3) } = ${volWithLoss.toFixed(4)} m³`,
+            `Cimento (sacos/m³) ≈ ${mix.sacks} sacos/m³ → sacos = ${volWithLoss.toFixed(4)} × ${mix.sacks} = ${ (volWithLoss*mix.sacks).toFixed(2) } sacos`
+          ].join('\n')}</pre>
+        </div>
+      `;
+      showOutput(html);
+      pushHistory(`Concreto C${fck} — ${fmt(volWithLoss,3)} m³`, result);
+
+      // store last result for export
+      window._lastCalc = result;
+    });
+
+    // pdf and save handlers for concrete
+    $('#pdfConcrete').addEventListener('click', ()=> {
+      if (!window._lastCalc || window._lastCalc.module!=='Concreto'){ alert('Execute o cálculo de concreto primeiro.'); return; }
+      const el = document.createElement('div');
+      el.style.padding='14px';
+      el.innerHTML = `<h2>Relatório — Concreto (Preliminar)</h2><pre>${JSON.stringify(window._lastCalc, null, 2)}</pre>`;
+      html2pdf().from(el).set({filename:`relatorio_concreto_${nowIso().slice(0,19).replace(/[:T]/g,'_')}.pdf`}).save();
+    });
+    $('#saveConcrete').addEventListener('click', ()=> {
+      if (!window._lastCalc || window._lastCalc.module!=='Concreto'){ alert('Execute o cálculo de concreto primeiro.'); return; }
+      localStorage.setItem('last_concrete', JSON.stringify(window._lastCalc));
+      alert('Resultado de concreto salvo localmente.');
+    });
+
+    // ---------- MASONRY ----------
+    $('#calcMasonry').addEventListener('click', ()=> {
+      const area = parseFloat($('#masonry_area').value) || 0;
+      const brick = $('#masonry_brick').value;
+      const joint = parseFloat($('#masonry_junta').value) || 10;
+      const ratio = $('#masonry_ratio').value;
+
+      if (area<=0){ alert('Informe área válida.'); return; }
+
+      // consumption per m2 (unit/m2) typical references
+      const brickRef = {
+        ceramico: { un_m2:31, mortar_m3_m2:0.027 },
+        concreto: { un_m2:12.5, mortar_m3_m2:0.030 },
+        soloCimento: { un_m2:12.5, mortar_m3_m2:0.025 }
+      };
+      const ref = brickRef[brick] || brickRef.ceramico;
+      const jointFactor = (joint===10)?1.00: (joint===8?0.95:(joint===12?1.05:1.0));
+      const effectiveUn = Math.ceil(area * ref.un_m2 * jointFactor * 1.05); // +5% perdas
+      const mortarVol = area * ref.mortar_m3_m2 * 1.15; // +15% perdas
+      // mortar mix ratios kg/m3 conservative
+      const mortarMix = { '1:3':{cementKg:450, sandM3:1.10}, '1:4':{cementKg:350,sandM3:1.15}};
+      const m = mortarMix[ratio] || mortarMix['1:3'];
+      const cementSacks = Math.ceil((mortarVol * m.cementKg)/50);
+      const sand_m3 = mortarVol * m.sandM3;
+
+      const result = {
+        module:'Alvenaria',
+        inputs:{area, brick, joint, ratio},
+        outputs:{units:effectiveUn, mortarVol, cementSacks, sand_m3}
+      };
+
+      const html = `
+        <div>
+          <div class="font-semibold">Alvenaria — Resultado preliminar</div>
+          <div class="small mt-2">Tijolos: <strong>${effectiveUn.toLocaleString('pt-BR')} un</strong></div>
+          <div class="small">Argamassa (assentamento) ≈ <strong>${fmt(mortarVol,3)} m³</strong></div>
+          <div class="small">Cimento (assentamento): <strong>${cementSacks} sacos (50kg)</strong></div>
+          <div class="small">Areia: <strong>${fmt(sand_m3,3)} m³</strong></div>
+          <hr class="my-2 small muted">
+          <div class="small"><strong>Memória:</strong></div>
+          <pre class="result-pre small">${[
+            `Un/m² referência: ${ref.un_m2} → un = area × ${ref.un_m2} × fator_junta (${jointFactor}) × 1.05 perdas`,
+            `Argamassa(m³) = area × ${ref.mortar_m3_m2} × 1.15 perdas = ${mortarVol.toFixed(3)} m³`
+          ].join('\n')}</pre>
+        </div>
+      `;
+
+      showOutput(html);
+      pushHistory(`Alvenaria — ${effectiveUn} un`, result);
+      window._lastCalc = result;
+    });
+    $('#saveMasonry').addEventListener('click', ()=> {
+      if (!window._lastCalc || window._lastCalc.module!=='Alvenaria'){ alert('Execute o cálculo de alvenaria primeiro.'); return; }
+      localStorage.setItem('last_masonry', JSON.stringify(window._lastCalc)); alert('Resultado salvo local.');
+    });
+    $('#pdfMasonry').addEventListener('click', ()=> {
+      if (!window._lastCalc || window._lastCalc.module!=='Alvenaria'){ alert('Execute o cálculo de alvenaria primeiro.'); return; }
+      const el = document.createElement('div'); el.style.padding='12px'; el.innerHTML=`<h2>Relatório — Alvenaria</h2><pre>${JSON.stringify(window._lastCalc,null,2)}</pre>`;
+      html2pdf().from(el).save();
+    });
+
+    // ---------- RETAINING (Arrimo simplificado) ----------
+    function rankineActive(phiDeg){
+      // Rankine simple active coefficient Ka = tan^2(45 - phi/2)
+      const phi = phiDeg * Math.PI/180;
+      const ka = Math.tan((Math.PI/4) - phi/2)**2;
+      return ka;
+    }
+    $('#calcRetaining').addEventListener('click', ()=> {
+      const L = parseFloat($('#ret_len').value) || 0;
+      const H = parseFloat($('#ret_h').value) || 0;
+      const base = parseFloat($('#ret_base').value) || 0.8;
+      const ratio = $('#ret_ratio').value;
+
+      if (L<=0 || H<=0){ alert('Informe dimensões válidas para o arrimo.'); return; }
+
+      // preliminary volumes
+      const avgTh = base; // simplified
+      const volWall = L * H * avgTh;
+      // assume stone fraction 65% and mortar 35%
+      const stoneVol = volWall * 0.65; // compacted in wall
+      const stoneBuy = stoneVol * 1.4; // loose factor
+      const mortarVol = volWall * 0.35 * 1.15; // production with losses
+
+      // simple stability check (empuxo com Rankine)
+      const gamma_soil = 18; // kN/m3 typical
+      const phi = 30; // assumed internal friction angle (deg) — could be parameter
+      const Ka = rankineActive(phi);
+      const pressureAtBase = gamma_soil * H * Ka; // kN/m2
+      const lateralForcePerMeter = 0.5 * pressureAtBase * H; // triangular distribution (kN/m)
+      // weight of wall per m (approx): volume per m * density stone ~ 2.0 t/m3 -> 20 kN/m3
+      const weightPerMeter = avgTh * H * 20; // kN/m
+      const safetyFactorSliding = (weightPerMeter * 0.5) / lateralForcePerMeter; // friction coeff ~0.5
+
+      const result = {
+        module:'Arrimo',
+        inputs:{L,H,base,ratio,assumptions:{gamma_soil,phi}},
+        outputs:{volWall,stoneVol,stoneBuy,mortarVol,Ka,pressureAtBase,lateralForcePerMeter,weightPerMeter,sfSliding:safetyFactorSliding}
+      };
+
+      const html = `
+        <div>
+          <div class="font-semibold">Arrimo — Resultado Preliminar</div>
+          <div class="small mt-2">Volume muro: <strong>${fmt(volWall,3)} m³</strong></div>
+          <div class="small">Pedra (compra, solto): <strong>${fmt(stoneBuy,3)} m³</strong></div>
+          <div class="small">Argamassa (produção): <strong>${fmt(mortarVol,3)} m³</strong></div>
+          <hr class="my-2 small muted">
+          <div class="small"><strong>Verificação preliminar:</strong></div>
+          <div class="small">Coef. Rankine (Ka) assumido (φ=${phi}°): <strong>${fmt(Ka,3)}</strong></div>
+          <div class="small">Pressão na base (kN/m²): <strong>${fmt(pressureAtBase,3)}</strong></div>
+          <div class="small">Força lateral por m (kN/m): <strong>${fmt(lateralForcePerMeter,3)}</strong></div>
+          <div class="small">Peso da seção por m (kN/m): <strong>${fmt(weightPerMeter,3)}</strong></div>
+          <div class="small">Fator segurança deslize (estimado): <strong>${fmt(safetyFactorSliding,2)}</strong></div>
+          <pre class="result-pre small">${[
+            `Vol muro = L × H × th = ${L} × ${H} × ${avgTh} = ${volWall.toFixed(3)} m³`,
+            `Pedra compra ≈ vol×0.65 × fator solto 1.4 = ${stoneBuy.toFixed(3)} m³`
+          ].join('\n')}</pre>
+        </div>
+      `;
+      showOutput(html);
+      pushHistory(`Arrimo — ${fmt(volWall,3)} m³`, result);
+      window._lastCalc = result;
+    });
+    $('#saveRetaining').addEventListener('click', ()=> { if(window._lastCalc && window._lastCalc.module==='Arrimo'){ localStorage.setItem('last_retaining',JSON.stringify(window._lastCalc)); alert('Arrimo salvo.')}else alert('Calcule o arrimo primeiro.'); });
+    $('#pdfRetaining').addEventListener('click', ()=> { if(!window._lastCalc || window._lastCalc.module!=='Arrimo'){alert('Calcule primeiro.'); return;} const el=document.createElement('div'); el.style.padding='12px'; el.innerHTML=`<pre>${JSON.stringify(window._lastCalc,null,2)}</pre>`; html2pdf().from(el).save(); });
+
+    // ---------- CERAMICA ----------
+    $('#calcCeramic').addEventListener('click', ()=> {
+      const area = parseFloat($('#cer_area').value) || 0;
+      const tile = $('#cer_tile').value || '30x30';
+      if (area<=0){ alert('Informe a área.'); return; }
+      const [w_cm,h_cm] = tile.split('x').map(Number);
+      const tileArea = (w_cm/100)*(h_cm/100);
+      const waste = 1.10; // 10% loss
+      const totalTiles = Math.ceil((area / tileArea) * waste);
+      // mortar: kg per m2 approximate depending on surface - use 4.5 kg/m2 baseline
+      const mortarKgPerM2 = 4.5;
+      const mortarKg = Math.ceil(area * mortarKgPerM2 * 1.15); // +15% perdas
+      const groutKg = Math.ceil(area * 0.5 * 1.2); // rough estimate (kg/m2)
+      const result = {module:'Ceramica', inputs:{area,tile}, outputs:{totalTiles,mortarKg,groutKg}};
+      const html = `
+        <div>
+          <div class="font-semibold">Revestimento Cerâmico — Resultado</div>
+          <div class="small mt-2">Total peças (com 10% perda): <strong>${totalTiles.toLocaleString('pt-BR')} un</strong></div>
+          <div class="small">Argamassa colante estimada: <strong>${mortarKg} kg</strong></div>
+          <div class="small">Rejunte estimado: <strong>${groutKg} kg</strong></div>
+        </div>
+      `;
+      showOutput(html);
+      pushHistory(`Cerâmica — ${totalTiles} un`, result);
+      window._lastCalc = result;
+    });
+    $('#saveCeramic').addEventListener('click', ()=> { if(window._lastCalc && window._lastCalc.module==='Ceramica'){ localStorage.setItem('last_ceramic',JSON.stringify(window._lastCalc)); alert('Cerâmica salva.')}else alert('Calcule primeiro.'); });
+    $('#pdfCeramic').addEventListener('click', ()=> { if(!window._lastCalc || window._lastCalc.module!=='Ceramica'){alert('Calcule primeiro.'); return;} const el=document.createElement('div');el.style.padding='12px';el.innerHTML=`<pre>${JSON.stringify(window._lastCalc,null,2)}</pre>`;html2pdf().from(el).save();});
+
+    // ---------- PINTURA ----------
+    $('#calcPaint').addEventListener('click', ()=> {
+      const area = parseFloat($('#paint_area').value) || 0;
+      const pt = $('#paint_type').value;
+      if (area<=0){ alert('Informe a área'); return; }
+      const yields = { latex:10, acrilica:12, textura:4 };
+      const yieldVal = yields[pt]||10;
+      const coats = 2; // or user choice later
+      const totalLiters = (area * coats) / yieldVal;
+      let rem = totalLiters; const c18 = Math.floor(rem/18); rem = rem - c18*18; const c36 = Math.ceil(rem/3.6);
+      const result = { module:'Pintura', inputs:{area,pt,coats}, outputs:{totalLiters,c18,c36}};
+      const html = `
+        <div>
+          <div class="font-semibold">Pintura — Resultado</div>
+          <div class="small mt-2">Litros estimados (para ${coats} demãos): <strong>${fmt(totalLiters,2)} L</strong></div>
+          <div class="small">Sugestão compra: <strong>${c18} lata(s) 18L</strong> + <strong>${c36} gal(ões) 3.6L</strong></div>
+        </div>
+      `;
+      showOutput(html);
+      pushHistory(`Pintura — ${fmt(totalLiters,2)} L`, result);
+      window._lastCalc = result;
+    });
+    $('#savePaint').addEventListener('click', ()=> { if(window._lastCalc && window._lastCalc.module==='Pintura'){ localStorage.setItem('last_paint',JSON.stringify(window._lastCalc)); alert('Pintura salva.')}else alert('Calcule primeiro.'); });
+    $('#pdfPaint').addEventListener('click', ()=> { if(!window._lastCalc || window._lastCalc.module!=='Pintura'){alert('Calcule primeiro.'); return;} const el=document.createElement('div');el.style.padding='12px';el.innerHTML=`<pre>${JSON.stringify(window._lastCalc,null,2)}</pre>`;html2pdf().from(el).save();});
+
+    // ---------- EXPORT / HISTORY ----------
+    $('#saveLocal').addEventListener('click', ()=> {
+      if (!window._lastCalc){ alert('Nenhum cálculo para salvar.'); return; }
+      localStorage.setItem('last_calc', JSON.stringify(window._lastCalc));
+      alert('Último cálculo salvo localmente.');
+    });
+    $('#loadLocal').addEventListener('click', ()=> {
+      const s = localStorage.getItem('last_calc');
+      if (!s) { alert('Nenhum cálculo salvo localmente.'); return; }
+      const obj = JSON.parse(s);
+      showOutput('<pre class="result-pre">'+JSON.stringify(obj,null,2)+'</pre>');
+    });
+    $('#clearHistory').addEventListener('click', ()=> { localStorage.removeItem('calc_history'); renderHistory(); });
+    $('#exportAllPDF').addEventListener('click', ()=> {
+      const hist = JSON.parse(localStorage.getItem('calc_history')||'[]');
+      if (!hist.length){ alert('Histórico vazio.'); return; }
+      const el = document.createElement('div'); el.style.padding='12px';
+      el.innerHTML = '<h2>Histórico de Cálculos</h2>' + hist.map(h=>`<h3>${h.title} — ${(new Date(h.ts)).toLocaleString()}</h3><pre>${JSON.stringify(h.data,null,2)}</pre><hr>`).join('');
+      html2pdf().from(el).save();
+    });
+    $('#exportCSV').addEventListener('click', ()=> {
+      const hist = JSON.parse(localStorage.getItem('calc_history')||'[]');
+      if (!hist.length){ alert('Histórico vazio.'); return; }
+      // Build CSV
+      let rows=[['title','timestamp','json']];
+      hist.forEach(h => rows.push([`"${h.title.replace(/"/g,'""')}"`,h.ts,`"${JSON.stringify(h.data).replace(/"/g,'""')}"`]));
+      const csv = rows.map(r=>r.join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`history_${nowIso().slice(0,19).replace(/[:T]/g,'_')}.csv`; document.body.appendChild(a); a.click(); a.remove();
+    });
+
+    // Render saved history at init
+    renderHistory();
+
+    // Utility to load last saved mode of module (optional)
+    // initial module show: concrete
+    document.querySelector('[data-module="concrete"]').click();
+
+    // Expose a simple API for copy button used in previous UIs
+    window.copyResult = function(elementId){
+      const el = document.getElementById(elementId);
+      if (!el) return alert('Resultado não encontrado.');
+      const text = el.innerText || el.textContent;
+      navigator.clipboard.writeText(text).then(()=> alert('Resultado copiado para a área de transferência.'));
+    };
+
+    // small accessibility: keyboard to navigate modules with numbers 1-5
+    document.addEventListener('keydown', (e) => {
+      if (e.key >= '1' && e.key <= '5') {
+        const idx = parseInt(e.key,10) - 1;
+        const btn = document.querySelectorAll('.module-btn')[idx];
+        if (btn) btn.click();
+      }
+    });
+
+  })();
+  </script>
+</body>
+</html>

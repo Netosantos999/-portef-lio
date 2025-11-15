@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Calculadora CBR — Premium Avançada</title>
+
+  <!-- Tailwind (CDN rápido) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- html2pdf for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+  <meta name="theme-color" content="#0f172a"/>
+  <style>
+    body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background: linear-gradient(180deg,#f8fafc, #eef2ff); color:#0f172a; }
+    .card { background: white; border-radius: 12px; box-shadow: 0 8px 30px rgba(2,6,23,0.08); }
+    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace; font-size: 0.8rem; background:#f3f4f6; padding:4px 8px; border-radius:6px; }
+    .muted { color:#6b7280; }
+    .warning { background: #fffbeb; border-left:4px solid #f59e0b; padding:10px; border-radius:6px; }
+    .ok { background:#ecfdf5; border-left:4px solid #10b981; padding:10px; border-radius:6px; }
+    @media (min-width:1024px){ .layout-grid { grid-template-columns: 1fr 420px; } }
+  </style>
+</head>
+<body class="antialiased">
+  <div class="min-h-screen flex items-start justify-center py-10 px-4">
+    <div class="w-full max-w-6xl">
+
+      <!-- Header -->
+      <header class="mb-6 flex items-start justify-between">
+        <div>
+          <h1 class="text-2xl md:text-3xl font-semibold">Calculadora CBR — Premium Avançada</h1>
+          <p class="muted mt-1 text-sm">Ferramenta para ensaio CBR, módulo resiliente e dimensionamento preliminar de camadas — uso para planejamento. Consulte norma para projeto executivo.</p>
+        </div>
+        <div class="text-right text-sm muted">
+          Autor: <strong>Francelino Neto Santos</strong><br>Versão: 2.0 • PWA & Export
+        </div>
+      </header>
+
+      <!-- Main card -->
+      <main class="card p-5 md:p-6">
+        <div class="grid gap-6 layout-grid">
+
+          <!-- Left: Inputs and controls -->
+          <section class="p-3 md:p-6">
+            <h2 class="text-lg font-medium mb-3">Entradas do Ensaio</h2>
+
+            <form id="form" class="space-y-3">
+              <div class="grid gap-3 md:grid-cols-2">
+                <label class="text-sm">CBR (força) - tensão em 2,5 mm (kPa)
+                  <input id="t2_5" type="number" step="any" class="mt-1 w-full px-3 py-2 border rounded" placeholder="Ex: 686 (kPa)">
+                </label>
+                <label class="text-sm">CBR (força) - tensão em 5,0 mm (kPa)
+                  <input id="t5_0" type="number" step="any" class="mt-1 w-full px-3 py-2 border rounded" placeholder="Ex: 1034 (kPa)">
+                </label>
+              </div>
+
+              <div class="grid gap-3 md:grid-cols-3">
+                <label class="text-sm">Altura inicial (mm)
+                  <input id="h0" type="number" step="any" class="mt-1 w-full px-3 py-2 border rounded" value="127">
+                </label>
+                <label class="text-sm">Altura final (mm)
+                  <input id="h1" type="number" step="any" class="mt-1 w-full px-3 py-2 border rounded" placeholder="Ex: 129">
+                </label>
+                <label class="text-sm">Umidade natural (%)
+                  <input id="u" type="number" step="any" class="mt-1 w-full px-3 py-2 border rounded" placeholder="Opcional">
+                </label>
+              </div>
+
+              <div class="grid gap-3 md:grid-cols-3">
+                <label class="text-sm">Densidade seca (g/cm³)
+                  <input id="densidade" type="number" step="any" class="mt-1 w-full px-3 py-2 border rounded" placeholder="Opcional">
+                </label>
+                <label class="text-sm">Energia Proctor
+                  <select id="proctor" class="mt-1 w-full px-3 py-2 border rounded">
+                    <option value="standard">Proctor Normal</option>
+                    <option value="modified">Proctor Modificado</option>
+                  </select>
+                </label>
+                <label class="text-sm">Observações (opcional)
+                  <input id="obs" type="text" class="mt-1 w-full px-3 py-2 border rounded" placeholder="Observações do ensaio">
+                </label>
+              </div>
+
+              <div class="flex gap-3 mt-2">
+                <button id="calcBtn" type="button" class="flex-1 px-4 py-2 rounded bg-sky-600 text-white hover:brightness-105">Calcular & Atualizar</button>
+                <button id="saveLocal" type="button" class="px-4 py-2 rounded border">Salvar (local)</button>
+              </div>
+
+              <div class="flex gap-2 mt-2 text-xs muted">
+                <div class="kbd">2,5 mm ≈ 686 kPa</div>
+                <div class="kbd">5,0 mm ≈ 1034 kPa</div>
+                <div class="muted ml-2">Padrões: ASTM D1883 / NBR 9895 / DNIT</div>
+              </div>
+            </form>
+
+            <div class="mt-4">
+              <div id="warnings" class=""></div>
+            </div>
+
+            <!-- quick results summary -->
+            <div id="summary" class="mt-4 hidden">
+              <h3 class="text-sm font-medium mb-2">Resumo Rápido</h3>
+              <div class="grid grid-cols-1 gap-2">
+                <div class="p-3 border rounded text-sm bg-white">
+                  <div class="flex justify-between"><span>CBR adotado</span><strong id="res-cbr">—</strong></div>
+                  <div class="flex justify-between"><span>Módulo Resiliente (MR)</span><strong id="res-mr">—</strong></div>
+                  <div class="flex justify-between"><span>Classificação subleito</span><strong id="res-class">—</strong></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="mt-4 flex gap-2">
+              <button id="exportPDF" class="flex-1 px-3 py-2 rounded bg-emerald-600 text-white">Exportar PDF</button>
+              <button id="exportCSV" class="px-3 py-2 rounded border">Exportar CSV</button>
+              <button id="clearBtn" class="px-3 py-2 rounded border">Limpar</button>
+            </div>
+
+            <div class="mt-4 text-xs muted">
+              <strong>Aviso:</strong> Ferramenta para **planejamento preliminar**. Consulte norma e projeto executivo para decisões finais.
+            </div>
+          </section>
+
+          <!-- Right: Results, graph, recommendations -->
+          <aside class="p-3 md:p-6">
+            <h2 class="text-lg font-medium mb-3">Resultados & Gráficos</h2>
+            <div id="report" class="space-y-3">
+
+              <div id="detailed" class="card p-4 text-sm">
+                <div class="grid gap-2">
+                  <div class="flex justify-between"><span class="muted">CBR @2,5 mm</span><strong id="out-cbr25">—</strong></div>
+                  <div class="flex justify-between"><span class="muted">CBR @5,0 mm</span><strong id="out-cbr50">—</strong></div>
+                  <div class="flex justify-between"><span class="muted">CBR adotado</span><strong id="out-cbr">—</strong></div>
+                  <div class="flex justify-between"><span class="muted">MR estimado</span><strong id="out-mr">—</strong></div>
+                  <div class="flex justify-between"><span class="muted">Expansão (%)</span><strong id="out-exp">—</strong></div>
+                </div>
+              </div>
+
+              <div class="card p-3">
+                <canvas id="curveChart" width="400" height="220"></canvas>
+              </div>
+
+              <div id="recommendations" class="mt-3 text-sm">
+                <h3 class="font-medium mb-2">Recomendações preliminares</h3>
+                <div id="recCards" class="space-y-2">
+                  <!-- populated dynamically -->
+                </div>
+              </div>
+
+              <div id="notes" class="mt-3 text-xs muted">
+                <p><strong>Normas e referências:</strong> ASTM D1883, NBR 9895, DNIT — valores convertidos para kPa (1 kgf/cm² ≈ 98.0665 kPa).</p>
+              </div>
+
+            </div>
+          </aside>
+        </div>
+      </main>
+
+      <footer class="mt-4 text-sm muted text-center">© 2025 — Calculadora CBR Premium • Desenvolvido por Francelino Neto Santos</footer>
+    </div>
+  </div>
+
+  <!-- Hidden export area used by html2pdf -->
+  <div id="pdfExportArea" style="display:none;"></div>
+
+<script>
+/* === Premium CBR app JS (all-in-one single-file) === */
+
+(() => {
+  // Helper constants
+  const KPA_2_5_REF = 686;   // referência conservadora para 2.5 mm (kPa)
+  const KPA_5_0_REF = 1034;  // referência conservadora para 5.0 mm (kPa)
+
+  // MR empirical formula: MR = 17.6 * CBR^0.64 (user earlier formula)
+  function MR_from_CBR(cbrPercent) {
+    if (cbrPercent <= 0) return 0;
+    return 17.6 * Math.pow(cbrPercent, 0.64);
+  }
+
+  // Classificação de subleito (exemplo simplificado DNIT-like)
+  function classifySubleito(cbr) {
+    // regras empíricas para planejamento preliminar
+    if (cbr < 3) return { code: 'S4', label: 'Muito fraco (S4)', color: 'bg-red-50', advice: 'Reforço obrigatório; considerar escavação e substituição.' };
+    if (cbr < 6) return { code: 'S3', label: 'Fraco (S3)', color: 'bg-yellow-50', advice: 'Provavelmente requer sub-base reforçada.' };
+    if (cbr < 12) return { code: 'S2', label: 'Médio (S2)', color: 'bg-amber-50', advice: 'Sub-base granular recomendada.' };
+    return { code: 'S1', label: 'Forte (S1)', color: 'bg-emerald-50', advice: 'Subleito aceitável; dimensionamento normal.' };
+  }
+
+  // Recommendações de espessura (valores empíricos conservadores para projeto preliminar)
+  function recommendThickness(cbr) {
+    // returns object with suggested thicknesses (mm)
+    if (cbr < 3) return { subbase: 300, base: 200, notes: 'Substituir ou estabilizar subleito; considerar geossintético.' };
+    if (cbr < 6) return { subbase: 250, base: 150, notes: 'Sub-base granular e compactação máxima.' };
+    if (cbr < 12) return { subbase: 200, base: 100, notes: 'Base e sub-base usuais.' };
+    return { subbase: 150, base: 80, notes: 'Espessuras típicas para tráfego leve a moderado.' };
+  }
+
+  // Utility: format number
+  const fmt = (v, dp=2) => (isFinite(v) ? Number(v).toFixed(dp) : '—');
+
+  // Chart.js setup
+  let chart = null;
+  function createChart(dataPen) {
+    const ctx = document.getElementById('curveChart').getContext('2d');
+    if (chart) chart.destroy();
+    chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: dataPen.map(p => p.def.toFixed(2) + ' mm'),
+        datasets: [{
+          label: 'Força (kPa) vs Deformação (mm)',
+          data: dataPen.map(p => p.force),
+          tension: 0.25,
+          fill: false,
+          borderColor: '#0ea5e9',
+          backgroundColor: '#0284c7',
+          pointRadius: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          x: { title: { display: true, text: 'Deformação (mm)' } },
+          y: { title: { display: true, text: 'Força (kPa)' } }
+        },
+        plugins: { legend: { display: false } }
+      }
+    });
+  }
+
+  // DOM
+  const t2_5 = document.getElementById('t2_5');
+  const t5_0 = document.getElementById('t5_0');
+  const h0 = document.getElementById('h0');
+  const h1 = document.getElementById('h1');
+  const u = document.getElementById('u');
+  const dens = document.getElementById('densidade');
+  const obs = document.getElementById('obs');
+  const proctor = document.getElementById('proctor');
+
+  const calcBtn = document.getElementById('calcBtn');
+  const saveLocalBtn = document.getElementById('saveLocal');
+  const exportPDF = document.getElementById('exportPDF');
+  const exportCSV = document.getElementById('exportCSV');
+  const clearBtn = document.getElementById('clearBtn');
+
+  const out_cbr25 = document.getElementById('out-cbr25');
+  const out_cbr50 = document.getElementById('out-cbr50');
+  const out_cbr = document.getElementById('out-cbr');
+  const out_mr = document.getElementById('out-mr');
+  const out_exp = document.getElementById('out-exp');
+
+  const res_cbr = document.getElementById('res-cbr');
+  const res_mr = document.getElementById('res-mr');
+  const res_class = document.getElementById('res-class');
+
+  const summary = document.getElementById('summary');
+  const recCards = document.getElementById('recCards');
+  const warnings = document.getElementById('warnings');
+
+  // default sample penetration curve (simple two-point linearised) for plot
+  function buildPenetrationCurve(force25, force50) {
+    // Build a dataset from 0mm to 5mm with denser points near 2.5 and 5.0
+    const points = [];
+    const maxDef = 6;
+    for (let d=0; d<=maxDef; d += 0.25) {
+      // linearly interpolate between 0 and 2.5 -> use 2.5 data; and between 2.5 and 5 -> use 5.0 data
+      let f = 0;
+      if (d <= 2.5) {
+        f = (force25 / 2.5) * d;
+      } else {
+        // interpolate from force25 at 2.5 to force50 at 5.0
+        const t = (d - 2.5) / 2.5;
+        f = force25 + (force50 - force25) * t;
+      }
+      points.push({ def: d, force: Number(f.toFixed(3)) });
+    }
+    return points;
+  }
+
+  // main compute
+  function computeAll() {
+    warnings.innerHTML = '';
+    recCards.innerHTML = '';
+    const f25 = parseFloat(t2_5.value);
+    const f50 = parseFloat(t5_0.value);
+    if (!isFinite(f25) && !isFinite(f50)) {
+      warnings.innerHTML = '<div class="warning text-sm">Preencha ao menos uma das tensões medidas (2,5 mm ou 5,0 mm).</div>';
+      return;
+    }
+
+    // Compute CBR percentages based on standard refs (conservative refs)
+    const cbr25 = isFinite(f25) ? (f25 / KPA_2_5_REF) * 100 : NaN;
+    const cbr50 = isFinite(f50) ? (f50 / KPA_5_0_REF) * 100 : NaN;
+
+    // Adopt the greater (if both present) or the one present
+    const cbrAdopt = Math.max(isFinite(cbr25) ? cbr25 : -Infinity, isFinite(cbr50) ? cbr50 : -Infinity);
+    const cbrAdoptVal = isFinite(cbrAdopt) ? cbrAdopt : 0;
+
+    // expansion
+    let expStr = '—';
+    if (h0.value && h1.value && isFinite(parseFloat(h0.value)) && isFinite(parseFloat(h1.value))) {
+      const hi = parseFloat(h0.value), hf = parseFloat(h1.value);
+      const exp = ((hf - hi) / hi) * 100;
+      expStr = fmt(exp,2) + ' %';
+      out_exp.textContent = fmt(exp,2) + ' %';
+    } else {
+      out_exp.textContent = '—';
+    }
+
+    // MR
+    const mr = MR_from_CBR(cbrAdoptVal);
+
+    // classification
+    const cls = classifySubleito(cbrAdoptVal);
+
+    // thickness recommendations
+    const thickness = recommendThickness(cbrAdoptVal);
+
+    // populate UI
+    out_cbr25.textContent = isFinite(cbr25) ? fmt(cbr25) + ' %' : '—';
+    out_cbr50.textContent = isFinite(cbr50) ? fmt(cbr50) + ' %' : '—';
+    out_cbr.textContent = fmt(cbrAdoptVal) + ' %';
+    out_mr.textContent = fmt(mr) + ' MPa (estim.)';
+    out_exp.textContent = (out_exp.textContent !== '') ? out_exp.textContent : '—';
+
+    res_cbr.textContent = fmt(cbrAdoptVal) + ' %';
+    res_mr.textContent = fmt(mr) + ' MPa';
+    res_class.textContent = cls.label;
+
+    summary.classList.remove('hidden');
+
+    // recommendations panel
+    const rec = document.createElement('div');
+    rec.className = 'p-3 border rounded bg-white';
+    rec.innerHTML = `
+      <div class="text-sm"><strong>Classificação:</strong> ${cls.label}</div>
+      <div class="text-sm mt-1"><strong>Recomendação:</strong> ${cls.advice}</div>
+      <div class="text-sm mt-2"><strong>Espessuras preliminares:</strong> Sub-base ≈ <strong>${thickness.subbase} mm</strong>, Base ≈ <strong>${thickness.base} mm</strong></div>
+      <div class="text-xs muted mt-1">${thickness.notes}</div>
+    `;
+    recCards.appendChild(rec);
+
+    // additional technical card
+    const tech = document.createElement('div');
+    tech.className = 'p-3 border rounded bg-white';
+    tech.innerHTML = `
+      <div class="text-sm"><strong>Fórmulas utilizadas:</strong></div>
+      <ul class="list-disc ml-5 text-xs muted mt-1">
+        <li>CBR% (2,5 mm) = (Força em 2,5 mm / ${KPA_2_5_REF} kPa) × 100</li>
+        <li>CBR% (5,0 mm) = (Força em 5,0 mm / ${KPA_5_0_REF} kPa) × 100</li>
+        <li>Módulo Resiliente (MR) estimado = 17.6 × CBR^0.64</li>
+      </ul>
+    `;
+    recCards.appendChild(tech);
+
+    // plot curve
+    const curveData = buildPenetrationCurve(isFinite(f25)?f25:0, isFinite(f50)?f50:0);
+    createChart(curveData);
+
+    // Save a snapshot object on window for export
+    window.__CBR_REPORT = {
+      created_at: new Date().toISOString(),
+      input: { f25: isFinite(f25)?f25:null, f50: isFinite(f50)?f50:null, h0: h0.value, h1: h1.value, umidade: u.value, densidade: dens.value, proctor: proctor.value, obs: obs.value },
+      results: { cbr25: isFinite(cbr25)?cbr25:null, cbr50: isFinite(cbr50)?cbr50:null, cbr: cbrAdoptVal, mr: mr, class: cls, thickness }
+    };
+
+    // subtle warnings
+    warnings.innerHTML = '';
+    if (cbrAdoptVal < 3) {
+      warnings.innerHTML = '<div class="warning text-sm">CBR muito baixo — avalie reforço do subleito, estabilização ou substituição.</div>';
+    }
+    if (!isFinite(f25) || !isFinite(f50)) {
+      warnings.innerHTML += '<div class="warning text-sm mt-2">Atenção: preencha ambos os pontos (2,5 e 5,0 mm) quando possível para maior confiabilidade.</div>';
+    }
+
+    // scroll to results
+    document.getElementById('report').scrollIntoView({behavior:'smooth'});
+  }
+
+  // Export PDF using html2pdf
+  function exportPDFReport() {
+    const report = window.__CBR_REPORT;
+    if (!report) { alert('Execute o cálculo antes de exportar.'); return; }
+
+    // Build a printable DOM fragment
+    const div = document.createElement('div');
+    div.style.padding = '18px';
+    div.style.fontFamily = 'Arial, sans-serif';
+    div.innerHTML = `
+      <h2 style="margin-bottom:6px;">Relatório CBR — Calculadora Premium</h2>
+      <p style="margin-top:0;margin-bottom:8px;">Gerado em: ${new Date(report.created_at).toLocaleString()}</p>
+      <h3>Entradas</h3>
+      <table style="width:100%;font-size:12px;margin-bottom:8px;">
+        <tr><td>Força 2,5 mm (kPa)</td><td>${report.input.f25 ?? '—'}</td></tr>
+        <tr><td>Força 5,0 mm (kPa)</td><td>${report.input.f50 ?? '—'}</td></tr>
+        <tr><td>Altura inicial (mm)</td><td>${report.input.h0 ?? '—'}</td></tr>
+        <tr><td>Altura final (mm)</td><td>${report.input.h1 ?? '—'}</td></tr>
+        <tr><td>Umidade (%)</td><td>${report.input.umidade ?? '—'}</td></tr>
+        <tr><td>Densidade seca</td><td>${report.input.densidade ?? '—'}</td></tr>
+      </table>
+      <h3>Resultados</h3>
+      <table style="width:100%;font-size:12px;margin-bottom:8px;">
+        <tr><td>CBR 2,5 mm</td><td>${fmt(report.results.cbr25)}</td></tr>
+        <tr><td>CBR 5,0 mm</td><td>${fmt(report.results.cbr50)}</td></tr>
+        <tr><td>CBR adotado (%)</td><td>${fmt(report.results.cbr)}</td></tr>
+        <tr><td>Módulo Resiliente (MPa)</td><td>${fmt(report.results.mr)}</td></tr>
+        <tr><td>Classificação</td><td>${report.results.class.label}</td></tr>
+        <tr><td>Espessuras (mm)</td><td>Sub-base ${report.results.thickness.subbase} | Base ${report.results.thickness.base}</td></tr>
+      </table>
+      <p style="font-size:11px;color:#666;">Observação: relatório gerado por ferramenta preliminar. Verifique tabela normativa e projeto executivo.</p>
+    `;
+    // generate PDF
+    const opt = { margin:0.4, filename:`relatorio_cbr_${(new Date()).toISOString().slice(0,19).replace(/[:T]/g,'_')}.pdf`, html2canvas:{scale:1.5}, jsPDF:{unit:'in', format:'a4', orientation:'portrait'} };
+    html2pdf().set(opt).from(div).save();
+  }
+
+  // Export CSV
+  function exportCSV() {
+    const report = window.__CBR_REPORT;
+    if (!report) { alert('Execute o cálculo antes de exportar.'); return; }
+    const rows = [
+      ['campo','valor'],
+      ['gerado_em', report.created_at],
+      ['f25_kPa', report.input.f25 ?? ''],
+      ['f50_kPa', report.input.f50 ?? ''],
+      ['h0_mm', report.input.h0 ?? ''],
+      ['h1_mm', report.input.h1 ?? ''],
+      ['umidade_pct', report.input.umidade ?? ''],
+      ['densidade', report.input.densidade ?? ''],
+      ['cbr25_pct', report.results.cbr25 ?? ''],
+      ['cbr50_pct', report.results.cbr50 ?? ''],
+      ['cbr_adotado_pct', report.results.cbr],
+      ['mr_mpa', report.results.mr],
+      ['classificacao', report.results.class.code],
+      ['subbase_mm', report.results.thickness.subbase],
+      ['base_mm', report.results.thickness.base]
+    ];
+    const csv = rows.map(r => r.map(cell => `"${String(cell).replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = `relatorio_cbr_${(new Date()).toISOString().slice(0,19).replace(/[:T]/g,'_')}.csv`; document.body.appendChild(a); a.click(); a.remove();
+  }
+
+  // Save to localStorage
+  function saveLocal() {
+    if (!window.__CBR_REPORT) { alert('Execute o cálculo antes de salvar.'); return; }
+    const key = 'cbr_report_' + (new Date()).toISOString();
+    localStorage.setItem(key, JSON.stringify(window.__CBR_REPORT));
+    alert('Relatório salvo localmente com chave: ' + key);
+  }
+
+  // Load last saved (simple helper)
+  function loadLastSaved() {
+    // find last key
+    const keys = Object.keys(localStorage).filter(k => k.startsWith('cbr_report_')).sort();
+    if (!keys.length) return null;
+    const val = JSON.parse(localStorage.getItem(keys[keys.length-1]));
+    return val;
+  }
+
+  // clear
+  function clearAll() {
+    document.getElementById('form').reset();
+    if (chart) chart.destroy();
+    document.getElementById('report').scrollIntoView({behavior:'smooth'});
+    document.querySelectorAll('#out-cbr25,#out-cbr50,#out-cbr,#out-mr,#out-exp,#res-cbr,#res-mr,#res-class').forEach(el => el.textContent = '—');
+    recCards.innerHTML = '';
+    warnings.innerHTML = '';
+    summary.classList.add('hidden');
+    window.__CBR_REPORT = null;
+  }
+
+  // attach events
+  calcBtn.addEventListener('click', computeAll);
+  exportPDF.addEventListener('click', exportPDFReport);
+  exportCSV.addEventListener('click', exportCSV);
+  saveLocalBtn.addEventListener('click', saveLocal);
+  clearBtn.addEventListener('click', clearAll);
+
+  // Auto-load last saved for user convenience
+  const last = loadLastSaved();
+  if (last) {
+    // minimal: populate inputs (if present)
+    if (last.input) {
+      if (last.input.f25) t2_5.value = last.input.f25;
+      if (last.input.f50) t5_0.value = last.input.f50;
+      if (last.input.h0) h0.value = last.input.h0;
+      if (last.input.h1) h1.value = last.input.h1;
+      if (last.input.umidade) u.value = last.input.umidade;
+      if (last.input.densidade) dens.value = last.input.densidade;
+      if (last.input.obs) obs.value = last.input.obs;
+    }
+    // compute automatically so user sees last state
+    computeAll();
+  }
+
+  // Simple PWA: register service worker using Blob (single-file)
+  if ('serviceWorker' in navigator) {
+    try {
+      const swCode = `
+        const CACHE = 'cbr-premium-v1';
+        const urls = ['./'];
+        self.addEventListener('install', e => {
+          self.skipWaiting();
+          e.waitUntil(caches.open(CACHE).then(c => c.addAll(urls)));
+        });
+        self.addEventListener('activate', e => { e.waitUntil(self.clients.claim()); });
+        self.addEventListener('fetch', e => {
+          e.respondWith(
+            caches.match(e.request).then(resp => resp || fetch(e.request).catch(()=>caches.match(e.request)))
+          );
+        });
+      `;
+      const blob = new Blob([swCode], { type: 'application/javascript' });
+      const swUrl = URL.createObjectURL(blob);
+      navigator.serviceWorker.register(swUrl).catch(()=>{/* ignore */});
+    } catch(err) { /* ignore on restricted environments */ }
+  }
+})();
+</script>
+</body>
+</html>
