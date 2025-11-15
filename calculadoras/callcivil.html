@@ -43,8 +43,7 @@
         <p class="small">Cálculos preliminares: concreto, alvenaria, arrimo, revestimento cerâmico e pintura — Tema Profissional (A).</p>
       </div>
       <div class="text-right">
-        <div id="modeDisplay" class="mode-badge">Modo: <span id="currentMode">Engenheiro</span></div>
-        <div class="small mt-1">Versão 3.0 • Desenvolvido por Francelino Neto</div>
+        <div class="small mt-1">Versão 3.0 • Desenvolvido por Francelino Neto Santos</div>
       </div>
     </header>
 
@@ -55,11 +54,6 @@
         <section class="p-4">
           <div class="flex items-center justify-between mb-4">
             <h2 class="section-title text-lg">Entradas & Seletor</h2>
-            <div>
-              <label class="inline-flex items-center small">
-                <input id="modeToggle" type="checkbox" class="mr-2"> Modo Mestre de Obras
-              </label>
-            </div>
           </div>
 
           <div class="border rounded p-3 mb-4">
@@ -270,7 +264,7 @@
     </main>
 
     <footer class="text-center small mt-4 text-gray-500">
-      © 2025 — Calculadora de Obras Civis • Desenvolvido por Francelino Neto Santos
+      © <span id="year"></span> — Calculadora de Obras Civis • Desenvolvido por Francelino Neto Santos
     </footer>
   </div>
 
@@ -278,7 +272,6 @@
   <script>
   /* ============================
      Calculadora Profissional — JS
-     - modo Engenheiro / Mestre
      - módulos: concrete, masonry, retaining, ceramic, paint
      - export PDF/CSV, salvar local
      ============================ */
@@ -335,19 +328,6 @@
         showOutput('Pronto para cálculo: '+b.textContent.trim());
       });
     });
-
-    // Mode toggle: Engenheiro (default) / Mestre
-    const modeToggle = $('#modeToggle'), modeDisplay = $('#currentMode');
-    function setMode(isMestre){
-      modeDisplay.textContent = isMestre ? 'Mestre de Obras' : 'Engenheiro';
-      localStorage.setItem('calc_mode', isMestre ? 'mestre' : 'engenheiro');
-      // Show/hide technical details based on mode: here we simply alter memory display verbosity
-    }
-    modeToggle.addEventListener('change', ()=> setMode(modeToggle.checked));
-    (function initMode(){
-      const m = localStorage.getItem('calc_mode') === 'mestre';
-      modeToggle.checked = m; setMode(m);
-    })();
 
     // ---------- CONCRETO ----------
     // Mix data (updated conservative consumption per m3, sacks 50kg)
@@ -668,6 +648,7 @@
 
     // small accessibility: keyboard to navigate modules with numbers 1-5
     document.addEventListener('keydown', (e) => {
+      if (e.target.matches('input, textarea, select')) return;
       if (e.key >= '1' && e.key <= '5') {
         const idx = parseInt(e.key,10) - 1;
         const btn = document.querySelectorAll('.module-btn')[idx];
@@ -676,6 +657,10 @@
     });
 
   })();
+  </script>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
