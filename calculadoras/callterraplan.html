@@ -3,21 +3,47 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Calculadora CBR — Premium Avançada</title>
-
+  <title>Calculadora CBR – Premium Avançada</title>
+  
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 
   <meta name="theme-color" content="#0f172a"/>
   <style>
-    body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background: linear-gradient(180deg,#f8fafc, #eef2ff); color:#0f172a; }
-    .card { background: white; border-radius: 12px; box-shadow: 0 8px 30px rgba(2,6,23,0.08); }
-    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace; font-size: 0.8rem; background:#f3f4f6; padding:4px 8px; border-radius:6px; }
-    .muted { color:#6b7280; }
-    .warning { background: #fffbeb; border-left:4px solid #f59e0b; padding:10px; border-radius:6px; }
-    .ok { background:#ecfdf5; border-left:4px solid #10b981; padding:10px; border-radius:6px; }
-    @media (min-width:1024px){ .layout-grid { grid-template-columns: 1fr 420px; } }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      background: linear-gradient(180deg, #f8fafc, #eef2ff);
+      color: #0f172a;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(2, 6, 23, 0.08);
+    }
+    .kbd {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+      font-size: 0.8rem;
+      background: #f3f4f6;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+    .muted { color: #6b7280; }
+    .warning {
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      padding: 10px;
+      border-radius: 6px;
+    }
+    .ok {
+      background: #ecfdf5;
+      border-left: 4px solid #10b981;
+      padding: 10px;
+      border-radius: 6px;
+    }
+    @media (min-width: 1024px) {
+      .layout-grid { grid-template-columns: 1fr 420px; }
+    }
   </style>
 </head>
 <body class="antialiased">
@@ -26,11 +52,11 @@
 
       <header class="mb-6 flex items-start justify-between">
         <div>
-          <h1 class="text-2xl md:text-3xl font-semibold">Calculadora CBR — Premium Avançada</h1>
-          <p class="muted mt-1 text-sm">Ferramenta para ensaio CBR, módulo resiliente e dimensionamento preliminar de camadas — uso para planejamento. Consulte norma para projeto executivo.</p>
+          <h1 class="text-2xl md:text-3xl font-semibold">Calculadora CBR – Premium Avançada</h1>
+          <p class="muted mt-1 text-sm">Ferramenta para ensaio CBR, módulo resiliente e dimensionamento preliminar de camadas – uso para planejamento. Consulte norma para projeto executivo.</p>
         </div>
         <div class="text-right text-sm muted">
-          Autor: <strong>Francelino Neto Santos</strong><br>Versão: 3.1 • Robusta
+          Autor: <strong>Francelino Neto Santos</strong><br>Versão: 3.2 • Robusta
         </div>
       </header>
 
@@ -47,10 +73,10 @@
             - <strong>Altura final (mm):</strong> A altura do corpo de prova após o ensaio de imersão para calcular a expansão.
           </p>
           <p><strong>3. Clique para Calcular:</strong><br>
-            - Após inserir os valores, clique no botão azul <strong>"Calcular & Atualizar"</strong>.
+            - Após inserir os valores, clique no botão azul <strong>"Calcular &amp; Atualizar"</strong>.
           </p>
           <p><strong>4. Analise os Resultados:</strong><br>
-            - A página rolará para a seção "Resultados & Gráficos", onde você encontrará o CBR adotado, o Módulo de Resiliência (MR), a classificação do subleito e recomendações de espessuras para o pavimento.
+            - A página rolará para a seção "Resultados &amp; Gráficos", onde você encontrará o CBR adotado, o Módulo de Resiliência (MR), a classificação do subleito e recomendações de espessuras para o pavimento.
           </p>
         </div>
       </details>
@@ -99,7 +125,7 @@
               </div>
 
               <div class="flex gap-3 mt-2">
-                <button id="calcBtn" type="button" class="flex-1 px-4 py-2 rounded bg-sky-600 text-white hover:brightness-105">Calcular & Atualizar</button>
+                <button id="calcBtn" type="button" class="flex-1 px-4 py-2 rounded bg-sky-600 text-white hover:brightness-105">Calcular &amp; Atualizar</button>
                 <button id="saveLocal" type="button" class="px-4 py-2 rounded border">Salvar (local)</button>
               </div>
 
@@ -118,9 +144,9 @@
               <h3 class="text-sm font-medium mb-2">Resumo Rápido</h3>
               <div class="grid grid-cols-1 gap-2">
                 <div class="p-3 border rounded text-sm bg-white">
-                  <div class="flex justify-between"><span>CBR adotado</span><strong id="res-cbr">—</strong></div>
-                  <div class="flex justify-between"><span>Módulo Resiliente (MR)</span><strong id="res-mr">—</strong></div>
-                  <div class="flex justify-between"><span>Classificação subleito</span><strong id="res-class">—</strong></div>
+                  <div class="flex justify-between"><span>CBR adotado</span><strong id="res-cbr">–</strong></div>
+                  <div class="flex justify-between"><span>Módulo Resiliente (MR)</span><strong id="res-mr">–</strong></div>
+                  <div class="flex justify-between"><span>Classificação subleito</span><strong id="res-class">–</strong></div>
                 </div>
               </div>
             </div>
@@ -132,21 +158,21 @@
             </div>
 
             <div class="mt-4 text-xs muted">
-              <strong>Aviso:</strong> Ferramenta para **planejamento preliminar**. Consulte norma e projeto executivo para decisões finais.
+              <strong>Aviso:</strong> Ferramenta para <strong>planejamento preliminar</strong>. Consulte norma e projeto executivo para decisões finais.
             </div>
           </section>
 
           <aside class="p-3 md:p-6">
-            <h2 class="text-lg font-medium mb-3">Resultados & Gráficos</h2>
+            <h2 class="text-lg font-medium mb-3">Resultados &amp; Gráficos</h2>
             <div id="report" class="space-y-3">
 
               <div id="detailed" class="card p-4 text-sm">
                 <div class="grid gap-2">
-                  <div class="flex justify-between"><span class="muted">CBR @2,5 mm</span><strong id="out-cbr25">—</strong></div>
-                  <div class="flex justify-between"><span class="muted">CBR @5,0 mm</span><strong id="out-cbr50">—</strong></div>
-                  <div class="flex justify-between"><span class="muted">CBR adotado</span><strong id="out-cbr">—</strong></div>
-                  <div class="flex justify-between"><span class="muted">MR estimado</span><strong id="out-mr">—</strong></div>
-                  <div class="flex justify-between"><span class="muted">Expansão (%)</span><strong id="out-exp">—</strong></div>
+                  <div class="flex justify-between"><span class="muted">CBR @2,5 mm</span><strong id="out-cbr25">–</strong></div>
+                  <div class="flex justify-between"><span class="muted">CBR @5,0 mm</span><strong id="out-cbr50">–</strong></div>
+                  <div class="flex justify-between"><span class="muted">CBR adotado</span><strong id="out-cbr">–</strong></div>
+                  <div class="flex justify-between"><span class="muted">MR estimado</span><strong id="out-mr">–</strong></div>
+                  <div class="flex justify-between"><span class="muted">Expansão (%)</span><strong id="out-exp">–</strong></div>
                 </div>
               </div>
 
@@ -157,11 +183,11 @@
               <div id="recommendations" class="mt-3 text-sm">
                 <h3 class="font-medium mb-2">Recomendações preliminares</h3>
                 <div id="recCards" class="space-y-2">
-                  </div>
+                </div>
               </div>
 
               <div id="notes" class="mt-3 text-xs muted">
-                <p><strong>Normas e referências:</strong> ASTM D1883, NBR 9895, DNIT — valores convertidos para kPa (1 kgf/cm² ≈ 98.0665 kPa).</p>
+                <p><strong>Normas e referências:</strong> ASTM D1883, NBR 9895, DNIT – valores convertidos para kPa (1 kgf/cm² ≈ 98.0665 kPa).</p>
               </div>
 
             </div>
@@ -169,70 +195,48 @@
         </div>
       </main>
 
-      <footer class="mt-4 text-sm muted text-center">© 2025 — Calculadora CBR Premium • Desenvolvido por Francelino Neto Santos</footer>
+      <footer class="mt-4 text-sm muted text-center">© 2025 – Calculadora CBR Premium • Desenvolvido por Francelino Neto Santos</footer>
     </div>
   </div>
 
-  <div id="pdfExportArea" style="display:none;"></div>
-
 <script>
-/* === Premium CBR app JS (all-in-one single-file) === */
-
-// *** CORREÇÃO PRINCIPAL: Esperar o DOM (HTML) carregar antes de executar o script ***
 document.addEventListener('DOMContentLoaded', () => {
 
-  // Helper constants
-  const KPA_2_5_REF = 686;   // referência conservadora para 2.5 mm (kPa)
-  const KPA_5_0_REF = 1034;  // referência conservadora para 5.0 mm (kPa)
+  const KPA_2_5_REF = 686;
+  const KPA_5_0_REF = 1034;
 
-  // MR empirical formula: MR = 17.6 * CBR^0.64 (user earlier formula)
   function MR_from_CBR(cbrPercent) {
     if (cbrPercent <= 0) return 0;
     return 17.6 * Math.pow(cbrPercent, 0.64);
   }
 
-  // Classificação de subleito (exemplo simplificado DNIT-like)
   function classifySubleito(cbr) {
-    // regras empíricas para planejamento preliminar
     if (cbr < 3) return { code: 'S4', label: 'Muito fraco (S4)', color: 'bg-red-50', advice: 'Reforço obrigatório; considerar escavação e substituição.' };
     if (cbr < 6) return { code: 'S3', label: 'Fraco (S3)', color: 'bg-yellow-50', advice: 'Provavelmente requer sub-base reforçada.' };
     if (cbr < 12) return { code: 'S2', label: 'Médio (S2)', color: 'bg-amber-50', advice: 'Sub-base granular recomendada.' };
     return { code: 'S1', label: 'Forte (S1)', color: 'bg-emerald-50', advice: 'Subleito aceitável; dimensionamento normal.' };
   }
 
-  // Recommendações de espessura (valores empíricos conservadores para projeto preliminar)
   function recommendThickness(cbr) {
-    // returns object with suggested thicknesses (mm)
     if (cbr < 3) return { subbase: 300, base: 200, notes: 'Substituir ou estabilizar subleito; considerar geossintético.' };
     if (cbr < 6) return { subbase: 250, base: 150, notes: 'Sub-base granular e compactação máxima.' };
     if (cbr < 12) return { subbase: 200, base: 100, notes: 'Base e sub-base usuais.' };
     return { subbase: 150, base: 80, notes: 'Espessuras típicas para tráfego leve a moderado.' };
   }
 
-  // Utility: format number
-  const fmt = (v, dp=2) => (isFinite(v) ? Number(v).toFixed(dp) : '—');
+  const fmt = (v, dp=2) => (isFinite(v) ? Number(v).toFixed(dp) : '–');
 
-  // Chart.js setup
   let chart = null;
+
   function createChart(dataPen) {
-    // *** CORREÇÃO ROBUSTEZ: Verifica se Chart.js foi carregado ***
     if (typeof Chart === 'undefined') {
-        console.warn('Chart.js não foi carregado. O gráfico não será desenhado.');
-        const chartCanvas = document.getElementById('curveChart');
-        if(chartCanvas) {
-            const ctx = chartCanvas.getContext('2d');
-            ctx.clearRect(0, 0, chartCanvas.width, chartCanvas.height);
-            ctx.fillStyle = '#6b7280';
-            ctx.font = '12px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('Falha ao carregar o gráfico.', chartCanvas.width/2, chartCanvas.height/2 - 10);
-            ctx.fillText('Execute via "Live Server" se estiver offline.', chartCanvas.width/2, chartCanvas.height/2 + 10);
-        }
-        return; // Sai da função para não travar o resto do script
+      console.warn('Chart.js não foi carregado.');
+      return;
     }
     
     const ctx = document.getElementById('curveChart').getContext('2d');
     if (chart) chart.destroy();
+
     chart = new Chart(ctx, {
       type: 'line',
       data: {
@@ -249,17 +253,46 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       options: {
         responsive: true,
+        maintainAspectRatio: true,
         scales: {
           x: { title: { display: true, text: 'Deformação (mm)' } },
-          y: { title: { display: true, text: 'Força (kPa)' } }
+          y: { title: { display: true, text: 'Força (kPa)' }, beginAtZero: true }
         },
         plugins: { legend: { display: false } }
       }
     });
   }
 
-  // DOM
-  // Estes só são procurados *depois* que o DOM está pronto
+  function buildPenetrationCurve(force25, force50) {
+    const valid25 = isFinite(force25) && force25 > 0;
+    const valid50 = isFinite(force50) && force50 > 0;
+
+    let f25_calc = valid25 ? force25 : 0;
+    let f50_calc = valid50 ? force50 : 0;
+
+    if (valid25 && !valid50) {
+      const slope = f25_calc / 2.5;
+      f50_calc = slope * 5.0;
+    } else if (!valid25 && valid50) {
+      const slope = f50_calc / 5.0;
+      f25_calc = slope * 2.5;
+    }
+    
+    const points = [];
+    const maxDef = 6;
+    for (let d=0; d<=maxDef; d += 0.25) {
+      let f = 0;
+      if (d <= 2.5) {
+        f = (f25_calc / 2.5) * d;
+      } else {
+        const t = (d - 2.5) / 2.5;
+        f = f25_calc + (f50_calc - f25_calc) * t;
+      }
+      points.push({ def: d, force: Number(f.toFixed(3)) });
+    }
+    return points;
+  }
+
   const t2_5 = document.getElementById('t2_5');
   const t5_0 = document.getElementById('t5_0');
   const h0 = document.getElementById('h0');
@@ -271,8 +304,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const calcBtn = document.getElementById('calcBtn');
   const saveLocalBtn = document.getElementById('saveLocal');
-  const exportPDF = document.getElementById('exportPDF');
-  const exportCSV = document.getElementById('exportCSV');
+  const exportPDFBtn = document.getElementById('exportPDF');
+  const exportCSVBtn = document.getElementById('exportCSV');
   const clearBtn = document.getElementById('clearBtn');
 
   const out_cbr25 = document.getElementById('out-cbr25');
@@ -289,46 +322,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const recCards = document.getElementById('recCards');
   const warnings = document.getElementById('warnings');
 
-  // *** CORREÇÃO LÓGICA GRÁFICO: Lida com dados ausentes ***
-  function buildPenetrationCurve(force25, force50) {
-    const valid25 = isFinite(force25) && force25 > 0;
-    const valid50 = isFinite(force50) && force50 > 0;
-
-    let f25_calc = valid25 ? force25 : 0;
-    let f50_calc = valid50 ? force50 : 0;
-
-    if (valid25 && !valid50) {
-        // Apenas 2.5 fornecido: Extrapolar
-        const slope = f25_calc / 2.5;
-        f50_calc = slope * 5.0; 
-    } else if (!valid25 && valid50) {
-        // Apenas 5.0 fornecido: Interpolar de 0
-        const slope = f50_calc / 5.0;
-        f25_calc = slope * 2.5; 
-    } else if (!valid25 && !valid50) {
-        f25_calc = 0;
-        f50_calc = 0;
-    }
-    
-    const points = [];
-    const maxDef = 6;
-    for (let d=0; d<=maxDef; d += 0.25) {
-        let f = 0;
-        if (d <= 2.5) {
-            f = (f25_calc / 2.5) * d;
-        } else {
-            const t = (d - 2.5) / 2.5; 
-            f = f25_calc + (f50_calc - f25_calc) * t;
-        }
-        points.push({ def: d, force: Number(f.toFixed(3)) });
-    }
-    return points;
-  }
-
-  // main compute
   function computeAll() {
     warnings.innerHTML = '';
     recCards.innerHTML = '';
+
     const f25 = parseFloat(t2_5.value);
     const f50 = parseFloat(t5_0.value);
 
@@ -341,14 +338,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const cbr50 = isFinite(f50) ? (f50 / KPA_5_0_REF) * 100 : NaN;
 
     let cbrAdoptVal = 0;
-    if (isFinite(cbr50) && cbr50 > cbr25) { 
-        cbrAdoptVal = cbr50;
+    if (isFinite(cbr50) && cbr50 > cbr25) {
+      cbrAdoptVal = cbr50;
     } else if (isFinite(cbr25)) {
-        cbrAdoptVal = cbr25;
+      cbrAdoptVal = cbr25;
     } else if (isFinite(cbr50)) {
-        cbrAdoptVal = cbr50;
+      cbrAdoptVal = cbr50;
     }
-    
+
     let expValue = NaN;
     const hi = parseFloat(h0.value);
     const hf = parseFloat(h1.value);
@@ -360,12 +357,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const cls = classifySubleito(cbrAdoptVal);
     const thickness = recommendThickness(cbrAdoptVal);
 
-    // Populate UI
-    out_cbr25.textContent = isFinite(cbr25) ? fmt(cbr25) + ' %' : '—';
-    out_cbr50.textContent = isFinite(cbr50) ? fmt(cbr50) + ' %' : '—';
+    out_cbr25.textContent = isFinite(cbr25) ? fmt(cbr25) + ' %' : '–';
+    out_cbr50.textContent = isFinite(cbr50) ? fmt(cbr50) + ' %' : '–';
     out_cbr.textContent = fmt(cbrAdoptVal) + ' %';
     out_mr.textContent = fmt(mr) + ' MPa (estim.)';
-    out_exp.textContent = isFinite(expValue) ? fmt(expValue) + ' %' : '—';
+    out_exp.textContent = isFinite(expValue) ? fmt(expValue) + ' %' : '–';
 
     res_cbr.textContent = fmt(cbrAdoptVal) + ' %';
     res_mr.textContent = fmt(mr) + ' MPa';
@@ -373,7 +369,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     summary.classList.remove('hidden');
 
-    // Recommendations panel
     const rec = document.createElement('div');
     rec.className = 'p-3 border rounded bg-white';
     rec.innerHTML = `
@@ -396,8 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     recCards.appendChild(tech);
 
-    // Plot curve
-    const curveData = buildPenetrationCurve(f25, f50); 
+    const curveData = buildPenetrationCurve(f25, f50);
     createChart(curveData);
 
     window.__CBR_REPORT = {
@@ -406,10 +400,9 @@ document.addEventListener('DOMContentLoaded', () => {
       results: { cbr25: isFinite(cbr25) ? cbr25 : null, cbr50: isFinite(cbr50) ? cbr50 : null, cbr: cbrAdoptVal, mr: mr, class: cls, thickness, expansion: isFinite(expValue) ? expValue : null }
     };
 
-    // Subtle warnings
     warnings.innerHTML = '';
     if (cbrAdoptVal < 3) {
-      warnings.innerHTML = '<div class="warning text-sm">CBR muito baixo — avalie reforço do subleito, estabilização ou substituição.</div>';
+      warnings.innerHTML = '<div class="warning text-sm">CBR muito baixo – avalie reforço do subleito, estabilização ou substituição.</div>';
     }
     if (isFinite(cbr50) && isFinite(cbr25) && cbr50 > cbr25) {
       warnings.innerHTML += '<div class="warning text-sm mt-2">Atenção: O valor de CBR em 5,0 mm é maior que o de 2,5 mm. A norma recomenda refazer o ensaio. Se o resultado persistir, adota-se o valor de 5,0 mm.</div>';
@@ -421,35 +414,37 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('report').scrollIntoView({ behavior: 'smooth' });
   }
 
-  // Export PDF using html2pdf
   function exportPDFReport() {
     if (typeof html2pdf === 'undefined') {
-        alert('Erro: A biblioteca de PDF não foi carregada. Verifique sua conexão com a internet.');
-        return;
+      alert('Erro: A biblioteca de PDF não foi carregada.');
+      return;
     }
-      
+
     const report = window.__CBR_REPORT;
-    if (!report) { alert('Execute o cálculo antes de exportar.'); return; }
+    if (!report) {
+      alert('Execute o cálculo antes de exportar.');
+      return;
+    }
 
     const div = document.createElement('div');
     div.style.padding = '18px';
     div.style.fontFamily = 'Arial, sans-serif';
     div.innerHTML = `
-      <h2 style="margin-bottom:6px;">Relatório CBR — Calculadora Premium</h2>
-      <p style="margin-top:0;margin-bottom:8px;">Gerado em: ${new Date(report.created_at).toLocaleString()}</p>
+      <h2>Relatório CBR – Calculadora Premium</h2>
+      <p>Gerado em: ${new Date(report.created_at).toLocaleString('pt-BR')}</p>
       <h3>Entradas</h3>
       <table style="width:100%;font-size:12px;margin-bottom:8px;">
-        <tr><td>Força 2,5 mm (kPa)</td><td>${report.input.f25 ?? '—'}</td></tr>
-        <tr><td>Força 5,0 mm (kPa)</td><td>${report.input.f50 ?? '—'}</td></tr>
-        <tr><td>Altura inicial (mm)</td><td>${report.input.h0 ?? '—'}</td></tr>
-        <tr><td>Altura final (mm)</td><td>${report.input.h1 ?? '—'}</td></tr>
-        <tr><td>Umidade (%)</td><td>${report.input.umidade ?? '—'}</td></tr>
-        <tr><td>Densidade seca</td><td>${report.input.densidade ?? '—'}</td></tr>
+        <tr><td>Força 2,5 mm (kPa)</td><td>${report.input.f25 ?? '–'}</td></tr>
+        <tr><td>Força 5,0 mm (kPa)</td><td>${report.input.f50 ?? '–'}</td></tr>
+        <tr><td>Altura inicial (mm)</td><td>${report.input.h0 ?? '–'}</td></tr>
+        <tr><td>Altura final (mm)</td><td>${report.input.h1 ?? '–'}</td></tr>
+        <tr><td>Umidade (%)</td><td>${report.input.umidade ?? '–'}</td></tr>
+        <tr><td>Densidade seca</td><td>${report.input.densidade ?? '–'}</td></tr>
       </table>
       <h3>Resultados</h3>
       <table style="width:100%;font-size:12px;margin-bottom:8px;">
-        <tr><td>CBR 2,5 mm</td><td>${fmt(report.results.cbr25)}</td></tr>
-        <tr><td>CBR 5,0 mm</td><td>${fmt(report.results.cbr50)}</td></tr>
+        <tr><td>CBR 2,5 mm (%)</td><td>${fmt(report.results.cbr25)}</td></tr>
+        <tr><td>CBR 5,0 mm (%)</td><td>${fmt(report.results.cbr50)}</td></tr>
         <tr><td>CBR adotado (%)</td><td>${fmt(report.results.cbr)}</td></tr>
         <tr><td>Módulo Resiliente (MPa)</td><td>${fmt(report.results.mr)}</td></tr>
         <tr><td>Classificação</td><td>${report.results.class.label}</td></tr>
@@ -457,17 +452,25 @@ document.addEventListener('DOMContentLoaded', () => {
       </table>
       <p style="font-size:11px;color:#666;">Observação: relatório gerado por ferramenta preliminar. Verifique tabela normativa e projeto executivo.</p>
     `;
-    
-    const opt = { margin:0.4, filename:`relatorio_cbr_${(new Date()).toISOString().slice(0,19).replace(/[:T]/g,'_')}.pdf`, html2canvas:{scale:1.5}, jsPDF:{unit:'in', format:'a4', orientation:'portrait'} };
+
+    const opt = {
+      margin: 0.4,
+      filename: 'relatorio_cbr_' + new Date().toISOString().slice(0, 19).replace(/[:T]/g, '_') + '.pdf',
+      html2canvas: { scale: 1.5 },
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
     html2pdf().set(opt).from(div).save();
   }
 
-  // Export CSV
   function exportCSV() {
     const report = window.__CBR_REPORT;
-    if (!report) { alert('Execute o cálculo antes de exportar.'); return; }
+    if (!report) {
+      alert('Execute o cálculo antes de exportar.');
+      return;
+    }
+
     const rows = [
-      ['campo','valor'],
+      ['campo', 'valor'],
       ['gerado_em', report.created_at],
       ['f25_kPa', report.input.f25 ?? ''],
       ['f50_kPa', report.input.f50 ?? ''],
@@ -483,87 +486,56 @@ document.addEventListener('DOMContentLoaded', () => {
       ['subbase_mm', report.results.thickness.subbase],
       ['base_mm', report.results.thickness.base]
     ];
-    const csv = rows.map(r => r.map(cell => `"${String(cell).replace(/"/g,'""')}"`).join(',')).join('\n');
+
+    const csv = rows.map(r => r.map(cell => '"' + String(cell).replace(/"/g, '""') + '"').join(',')).join('\n');
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `cbr_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'_')}.csv`;
+    a.download = 'cbr_' + new Date().toISOString().slice(0, 19).replace(/[:T]/g, '_') + '.csv';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   }
 
-  // Save to localStorage
-  function saveLocal() {
-    if (!window.__CBR_REPORT) { alert('Execute o cálculo antes de salvar.'); return; }
-    try {
-      const key = 'cbr_report_' + (new Date()).toISOString();
-      localStorage.setItem(key, JSON.stringify(window.__CBR_REPORT));
-      alert('Relatório salvo localmente com chave: ' + key);
-    } catch(e) {
-      alert('Falha ao salvar localmente. O armazenamento pode estar cheio ou desativado.');
-    }
-  }
-
-  // Load last saved (simple helper)
-  function loadLastSaved() {
-    try {
-      const keys = Object.keys(localStorage).filter(k => k.startsWith('cbr_report_')).sort();
-      if (!keys.length) return null;
-      const val = JSON.parse(localStorage.getItem(keys[keys.length-1]));
-      return val;
-    } catch(e) {
-      console.warn('Não foi possível carregar dados salvos.', e);
-      return null;
-    }
-  }
-
-  // clear
   function clearAll() {
     document.getElementById('form').reset();
     if (chart) chart.destroy();
     
     const chartCanvas = document.getElementById('curveChart');
-    if(chartCanvas) {
-        const ctx = chartCanvas.getContext('2d');
-        ctx.clearRect(0, 0, chartCanvas.width, chartCanvas.height);
+    if (chartCanvas) {
+      const ctx = chartCanvas.getContext('2d');
+      ctx.clearRect(0, 0, chartCanvas.width, chartCanvas.height);
     }
-    
-    document.getElementById('report').scrollIntoView({behavior:'smooth'});
-    document.querySelectorAll('#out-cbr25,#out-cbr50,#out-cbr,#out-mr,#out-exp,#res-cbr,#res-mr,#res-class').forEach(el => el.textContent = '—');
+
+    document.querySelectorAll('#out-cbr25,#out-cbr50,#out-cbr,#out-mr,#out-exp,#res-cbr,#res-mr,#res-class').forEach(el => el.textContent = '–');
     recCards.innerHTML = '';
     warnings.innerHTML = '';
     summary.classList.add('hidden');
     window.__CBR_REPORT = null;
   }
 
-  // attach events
   if (calcBtn) calcBtn.addEventListener('click', computeAll);
-  if (exportPDF) exportPDF.addEventListener('click', exportPDFReport);
-  if (exportCSV) exportCSV.addEventListener('click', exportCSV);
-  if (saveLocalBtn) saveLocalBtn.addEventListener('click', saveLocal);
+  if (exportPDFBtn) exportPDFBtn.addEventListener('click', exportPDFReport);
+  if (exportCSVBtn) exportCSVBtn.addEventListener('click', exportCSV);
+  if (saveLocalBtn) saveLocalBtn.addEventListener('click', () => {
+    if (!window.__CBR_REPORT) {
+      alert('Execute o cálculo antes de salvar.');
+      return;
+    }
+    try {
+      const key = 'cbr_report_' + new Date().toISOString();
+      localStorage.setItem(key, JSON.stringify(window.__CBR_REPORT));
+      alert('Relatório salvo localmente!');
+    } catch(e) {
+      console.error('Erro ao salvar:', e);
+      alert('Não foi possível salvar. Verifique o armazenamento local.');
+    }
+  });
   if (clearBtn) clearBtn.addEventListener('click', clearAll);
 
-  // Auto-load last saved for user convenience
-  const last = loadLastSaved();
-  if (last) {
-    if (last.input) {
-      if (last.input.f25 && t2_5) t2_5.value = last.input.f25;
-      if (last.input.f50 && t5_0) t5_0.value = last.input.f50;
-      if (last.input.h0 && h0) h0.value = last.input.h0;
-      if (last.input.h1 && h1) h1.value = last.input.h1;
-      if (last.input.umidade && u) u.value = last.input.umidade;
-      if (last.input.densidade && dens) dens.value = last.input.densidade;
-      if (last.input.obs && obs) obs.value = last.input.obs;
-    }
-    computeAll();
-  }
-
-  // REMOVIDO: O bloco do Service Worker (PWA) foi removido pois causa erros em file:///
-  
-}); // *** FIM DA CORREÇÃO 'DOMContentLoaded' ***
+});
 </script>
 </body>
 </html>
