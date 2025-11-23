@@ -1,299 +1,337 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   
-  <!-- Meta Tags para Redes Sociais (Open Graph e Twitter) -->
-  <meta property="og:title" content="Francelino Neto Santos — Portfólio Profissional" />
-  <meta property="og:description" content="Profissional com experiência em obras, unindo campo e tecnologia." />
+  <meta property="og:title" content="Francelino Neto Santos — Gestão de Obras e Infraestrutura" />
+  <meta property="og:description" content="Especialista em Subestações e Liderança de Equipes com foco em eficiência técnica." />
   <meta property="og:image" content="https://netosantos999.github.io/-portef-lio/preview.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:url" content="https://netosantos999.github.io/-portef-lio/" />
   <meta property="og:type" content="website" />
 
-  <!-- Twitter Card Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Francelino Neto Santos — Portfólio Profissional">
-  <meta name="twitter:description" content="Profissional com experiência em obras, unindo campo e tecnologia.">
-  <meta name="twitter:image" content="https://netosantos999.github.io/-portef-lio/preview.png">
-
-  <title>Francelino Neto Santos — Portfólio Profissional</title>
+  <title>Francelino Neto Santos — Engenharia e Gestão</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    :root{--accent:#f97316}
-    body{background:#0f172a;color:#f1f5f9}
-    .section{max-width:1100px;margin:auto;padding:4rem 1.5rem}
-    h1,h2,h3{font-weight:700;color:#fff}
-    a{color:var(--accent)}
-    .card{background:#1e293b;border-radius:1rem;padding:2rem;box-shadow:0 4px 30px rgba(0,0,0,0.3)}
-
-    /* Grid de obras */
-    .obra-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
-    .obra-item{position:relative;overflow:hidden;border-radius:1rem;cursor:pointer}
-    .obra-item img{width:100%;height:260px;object-fit:cover;transition:transform 0.4s ease}
-    .obra-item:hover img{transform:scale(1.05)}
-    .obra-caption{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:#fff;padding:0.5rem 1rem;font-size:0.9rem;text-align:center}
-
-    /* Lightbox */
-    #lightbox{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);display:none;align-items:center;justify-content:center;z-index:9999}
-    #lightbox img{max-width:90%;max-height:80%;border-radius:1rem;box-shadow:0 0 20px rgba(0,0,0,0.8)}
-    #lightbox button{position:absolute;top:5%;right:5%;background:none;color:white;font-size:2rem;border:none;cursor:pointer;padding:1rem}
-
-    @media (max-width: 768px) {
-      .section { padding: 2.5rem 1rem; }
-      h1.text-xl { font-size: 1.25rem; }
-      h2.text-3xl { font-size: 1.875rem; }
-      .obra-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
-      header.section { flex-direction: column; align-items: flex-start; gap: 1rem; }
-      nav#menu { width: 100%; }
-    }
-  </style>
-</head>
-<body class="font-sans">
-  <header class="section flex flex-wrap items-center justify-between">
-  <div class="flex items-center gap-4">
-    <!-- FOTO DE PERFIL -->
-    <img src="fotoperfil.png" alt="Foto de Francelino Neto Santos" class="w-20 h-20 rounded-full border-2 border-orange-500 object-cover">
-    
-    <!-- NOME -->
-    <h1 class="text-xl md:text-2xl font-bold">Francelino Neto Santos</h1>
-  </div>
-
-  <!-- Botão Hamburger -->
-  <button id="menu-btn" class="md:hidden p-2 rounded-md text-slate-300 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-    </svg>
-  </button>
-
-  <nav id="menu" class="hidden md:flex md:items-center w-full md:w-auto mt-4 md:mt-0 space-y-2 md:space-y-0 md:space-x-6 text-slate-300">
-    <a href="#sobre" class="block md:inline-block hover:text-white">Sobre</a>
-    <a href="#experiencia" class="block md:inline-block hover:text-white">Experiência</a>
-    <a href="#sistemas" class="block md:inline-block hover:text-white">Sistemas</a>
-    <a href="#calculadoras" class="block md:inline-block hover:text-white">Calculadoras</a>
-    <a href="#galeria" class="block md:inline-block hover:text-white">Obras</a>
-    <a href="#contato" class="block md:inline-block hover:text-white">Contato</a>
-  </nav>
-</header>
-
-
-  <section class="section text-center">
-    <h2 class="text-3xl md:text-4xl font-extrabold mb-4">Mestre de Obras • Técnico em Eletrotécnica • Tecnólogo em Redes de Computadores</h2>
-    <p class="text-slate-300 max-w-2xl mx-auto text-lg leading-relaxed">Profissional com experiência em obras subestações elétricas. Atuo na integração entre campo e tecnologia, desenvolvendo sistemas e automações que melhoram o controle, a eficiência e a comunicação nas operações diárias.</p>
-    <div class="mt-6 flex flex-wrap justify-center gap-4">
-      <a href="https://www.linkedin.com/in/francelino-neto-santos-17671b158/" target="_blank" class="bg-orange-500 text-slate-900 font-semibold px-5 py-3 rounded-lg">Perfil LinkedIn</a>
-      <a href="#contato" class="border border-slate-600 px-5 py-3 rounded-lg hover:bg-slate-800">Contato</a>
-    </div>
-  </section>
-
-  <section id="sobre" class="section grid md:grid-cols-2 gap-8 items-start">
-    <div>
-      <h2 class="text-2xl mb-4">Sobre mim</h2>
-      <p class="text-slate-300 leading-relaxed">Sou um profissional apaixonado por inovação prática. Busco aplicar tecnologia para resolver desafios reais de campo, seja com ferramentas digitais próprias ou soluções otimizadas. Acredito que a combinação de <strong>experiência técnica, liderança e aprendizado contínuo</strong> transforma a rotina de obras e gera resultados sustentáveis.</p>
-      <p class="mt-4 text-slate-400 italic">“Foco, determinação e aprendizado são os pilares que me guiam para evoluir com as pessoas e os desafios ao meu redor.”</p>
-    </div>
-
-    <div class="card">
-      <h3 class="text-xl font-semibold mb-2">Áreas de atuação</h3>
-      <ul class="space-y-2 text-slate-300">       
-        <li>• Subestações Elétricas</li>
-        <li>• Gestão de equipes e produtividade no Canteiro de Obras</li>
-        <li>• Desenvolvimento de sistemas de controle de ponto e relatórios técnicos com Python + Streamlit</li>
-        <li>• Automação de processos e integração com Google Cloud</li>
-      </ul>
-    </div>
-  </section>
-
-  <section id="experiencia" class="section">
-    <h2 class="text-2xl mb-6">Experiência Profissional</h2>
-    <div class="space-y-6">
-      <div class="card"><h3 class="font-semibold text-lg">Mestre de Obras — Setor de Energia / Construção<br>
-      <li>Obras Infraestrutura Civil</li>
-      <li>Subestações de Alta tensão HV</li>
-     </h3><p class="text-slate-300 mt-2">Atuação direta em obras de grande porte, coordenando equipes e operacionais, garantindo o cumprimento de cronogramas, qualidade e segurança.</p></div>
-      <div class="card"><h3 class="font-semibold text-lg">Desenvolvedor de Ferramentas Internas</h3><p class="text-slate-300 mt-2">Desenvolvimento de sistemas web para controle de ponto, relatórios de frequência, auditoria e dashboards internos com Python + Streamlit.</p></div>
-    </div>
-  </section>
-
-  <!-- Galeria de Sistemas -->
-<section id="sistemas" class="section">
-  <h2 class="text-2xl mb-6 text-center">Galeria de Sistemas de Gestão de Obras</h2>
-
-  <!-- Swiper Container -->
-  <div class="swiper mySwiper">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide"><img src="obras_imagens/sistema1.png" alt="Sistema 1"></div>
-      <div class="swiper-slide"><img src="obras_imagens/sistema2.png" alt="Sistema 2"></div>
-      <div class="swiper-slide"><img src="obras_imagens/sistema3.png" alt="Sistema 3"></div>
-      <div class="swiper-slide"><img src="obras_imagens/sistema5.png" alt="Sistema 5"></div>
-      <div class="swiper-slide"><img src="obras_imagens/sistema6.png" alt="Sistema 6"></div>
-      <div class="swiper-slide"><img src="obras_imagens/sistema7.png" alt="Sistema 7"></div>
-      <div class="swiper-slide"><img src="obras_imagens/sistema8.png" alt="Sistema 8"></div>
-      <div class="swiper-slide"><img src="obras_imagens/sistema9.png" alt="Sistema 9"></div>
-      <div class="swiper-slide"><img src="obras_imagens/sistema10.png" alt="Sistema 10"></div>
-      <div class="swiper-slide"><img src="obras_imagens/sistema11.png" alt="Sistema 11"></div>
-      <div class="swiper-slide"><img src="obras_imagens/sistema12.png" alt="Sistema 12"></div>
-      <div class="swiper-slide"><img src="obras_imagens/sistema13.png" alt="Sistema 13"></div>
-      <div class="swiper-slide"><img src="obras_imagens/sistema14.png" alt="Sistema 14"></div>
-      <div class="swiper-slide"><img src="obras_imagens/sistema15.png" alt="Sistema 15"></div>
-      <div class="swiper-slide"><img src="obras_imagens/sistema16.png" alt="Sistema 16"></div>
-
-
-    </div>
-
-    <!-- Botões -->
-    <div class="swiper-button-next"></div>
-    <div class="swiper-button-prev"></div>
-    <div class="swiper-pagination"></div>
-  </div>
-</section>
-
-<!-- Seção de Calculadoras -->
-<section id="calculadoras" class="section">
-  <h2 class="text-2xl mb-6 text-center">Calculadoras Técnicas</h2>
-  <div class="grid md:grid-cols-3 gap-8 text-center">
-    
-    <a href="calculadoras/callcivil.html" target="_blank" class="card block hover:border-orange-500 border-2 border-transparent transition-all duration-300">
-      <h3 class="text-xl font-semibold mb-2">Construção Civil</h3>
-      <p class="text-slate-400">Acesse ferramentas para cálculos de materiais e estruturas.</p>
-    </a>
-    
-    <a href="calculadoras/calleletrica.html" target="_blank" class="card block hover:border-orange-500 border-2 border-transparent transition-all duration-300">
-      <h3 class="text-xl font-semibold mb-2">Elétrica</h3>
-      <p class="text-slate-400">Calcule dimensionamentos e parâmetros elétricos.</p>
-    </a>
-    
-    <a href="calculadoras/callterraplan.html" target="_blank" class="card block hover:border-orange-500 border-2 border-transparent transition-all duration-300">
-      <h3 class="text-xl font-semibold mb-2">Terraplanagem</h3>
-      <p class="text-slate-400">Utilize calculadoras para movimentação de terra e volumes.</p>
-    </a>
-
-  </div>
-</section>
-
-<!-- Swiper CSS + JS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
-<script>
-  new Swiper(".mySwiper", {
-    slidesPerView: 3,
-    spaceBetween: 20,
-    loop: true,
-    autoplay: {
-      delay: 2500,
-      disableOnInteraction: false,
-    },
-    pagination: { el: ".swiper-pagination", clickable: true },
-    navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
-    breakpoints: {
-      1024: { slidesPerView: 3 },
-      768: { slidesPerView: 2 },
-      0: { slidesPerView: 1 },
-    }
-  });
-</script>
-
-<style>
-.swiper-slide img {
-  width: 100%;
-  border-radius: 1rem;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-  transition: transform 0.3s;
-}
-.swiper-slide img:hover {
-  transform: scale(1.05);
-}
-</style>
-
-  <!-- Galeria de Obras -->
-  <section id="galeria" class="section">
-    <h2 class="text-2xl mb-6">Galeria de Obras</h2>
-    <div class="obra-grid">
-      <div class="obra-item"><img src="obras_imagens/mda.jpeg" alt="Obra 24"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
-      <div class="obra-item"><img src="obras_imagens/mda2.jpeg" alt="Obra 25"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
-      <div class="obra-item"><img src="obras_imagens/mda3.jpeg" alt="Obra 26"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
-      <div class="obra-item"><img src="obras_imagens/mda4.jpeg" alt="Obra 27"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
-      <div class="obra-item"><img src="obras_imagens/mda5.jpeg" alt="Obra 28"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
-      <div class="obra-item"><img src="obras_imagens/mda6.jpeg" alt="Obra 29"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
-      <div class="obra-item"><img src="obras_imagens/mda7.jpeg" alt="Obra 30"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
-      <div class="obra-item"><img src="obras_imagens/mda8.jpeg" alt="Obra 31"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
-      <div class="obra-item"><img src="obras_imagens/mda9.jpeg" alt="Obra 32"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bda.jpg" alt="Obra 1"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bda2.jpg" alt="Obra 2"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bda3.jpg" alt="Obra 3"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bda4.jpg" alt="Obra 4"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bda5.jpg" alt="Obra 5"><div class="obra-caption">SE Malha Dágua Jaguaretama-CE (2025)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bda6.jpg" alt="Obra 6"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bda7.jpg" alt="Obra 7"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bda8.jpg" alt="Obra 8"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bda9.jpg" alt="Obra 9"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bda10.jpg" alt="Obra 10"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bda11.jpg" alt="Obra 11"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bda13.jpg" alt="Obra 12"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bda14.jpg" alt="Obra 13"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bda15.jpg" alt="Obra 14"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bda16.jpg" alt="Obra 15"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bda17.jpg" alt="Obra 16"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bda18.jpg" alt="Obra 17"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bda19.jpg" alt="Obra 18"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bomjardin.jpeg" alt="Obra 19"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bomjardin2.jpeg" alt="Obra 20"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bomjardin3.jpeg" alt="Obra 21"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bomjardin4.jpeg" alt="Obra 22"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
-      <div class="obra-item"><img src="obras_imagens/bomjardin5.jpeg" alt="Obra 23"><div class="obra-caption">SE Bom Jardim Icó-CE (2024)</div></div>
-
-    </div>
-  </section>
-
-  <!-- Lightbox -->
-  <div id="lightbox">
-    <button onclick="closeLightbox()">✕</button>
-    <img id="lightboxImage" src="" alt="">
-  </div>
-
-  <section id="contato" class="section text-center">
-    <h2 class="text-2xl mb-4">Entre em contato</h2>
-    <p class="text-slate-300 mb-6">Quer me conhecer melhor? Vamos conversar 👋.</p>
-    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=francelinotees@gmail.com" 
-   target="_blank" 
-   class="inline-block bg-orange-500 text-slate-900 font-semibold px-6 py-3 rounded-lg">
-   Enviar e-mail
-</a>
-
-  </section>
-
-  <footer class="text-center text-slate-500 py-6 text-sm">
-    © <span id="year"></span> Francelino Neto Santos — Inovação e Tecnologia em Obras
-  </footer>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
   <script>
-    document.getElementById('year').textContent=new Date().getFullYear();
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            primary: '#f97316', 
+            dark: '#0f172a',
+            card: '#1e293b',
+          }
+        }
+      }
+    }
+  </script>
 
-    // Lightbox simples
-    const lightbox=document.getElementById('lightbox');
-    const lightboxImg=document.getElementById('lightboxImage');
-    const obras=document.querySelectorAll('.obra-item img');
+  <style>
+    body { background-color: #0f172a; color: #f1f5f9; overflow-x: hidden; }
+    .glass {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .hero-bg {
+      background: radial-gradient(circle at 50% 50%, rgba(249, 115, 22, 0.1) 0%, rgba(15, 23, 42, 0) 60%);
+    }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #f97316; }
+    .timeline-line {
+      position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: #334155; transform: translateX(-50%);
+    }
+    @media (max-width: 768px) { .timeline-line { left: 20px; } }
+  </style>
+</head>
+<body class="font-sans antialiased selection:bg-primary selection:text-white">
 
-    obras.forEach(img=>{
-      img.addEventListener('click',()=>{
-        lightboxImg.src=img.src;
-        lightbox.style.display='flex';
-      });
+  <header class="fixed w-full top-0 z-50 glass shadow-lg transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center gap-3">
+          <img src="fotoperfil.png" alt="Foto de Perfil" class="w-10 h-10 rounded-full border-2 border-primary object-cover shadow-md">
+          <span class="font-bold text-lg tracking-tight text-white">Neto<span class="text-primary">Santos</span></span>
+        </div>
+        <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-300">
+          <a href="#sobre" class="hover:text-primary transition-colors">Sobre</a>
+          <a href="#experiencia" class="hover:text-primary transition-colors">Trajetória</a>
+          <a href="#galeria" class="hover:text-primary transition-colors">Obras</a>
+          <a href="#inovacao" class="hover:text-primary transition-colors">Tecnologia</a>
+          <a href="#contato" class="px-4 py-2 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all">Contato</a>
+        </nav>
+        <button id="menu-btn" class="md:hidden text-slate-300 hover:text-white focus:outline-none">
+          <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+        </button>
+      </div>
+    </div>
+    <div id="menu" class="hidden md:hidden glass border-t border-slate-700 absolute w-full">
+      <div class="px-4 pt-2 pb-4 space-y-1 text-center">
+        <a href="#sobre" class="block px-3 py-3 text-slate-300">Sobre</a>
+        <a href="#experiencia" class="block px-3 py-3 text-slate-300">Trajetória</a>
+        <a href="#galeria" class="block px-3 py-3 text-slate-300">Obras</a>
+        <a href="#inovacao" class="block px-3 py-3 text-slate-300">Tecnologia</a>
+        <a href="#contato" class="block px-3 py-3 text-primary font-bold">Contato</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="pt-32 pb-20 px-4 hero-bg min-h-screen flex items-center justify-center text-center relative overflow-hidden">
+    <div class="max-w-5xl mx-auto relative z-10" data-aos="fade-up" data-aos-duration="1000">
+      <div class="mb-6 inline-block">
+        <img src="fotoperfil.png" alt="Francelino Neto Santos" class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-primary shadow-[0_0_30px_rgba(249,115,22,0.5)] object-cover mx-auto">
+      </div>
+
+      <h1 class="text-4xl md:text-6xl font-black text-white mb-6 leading-tight">
+        Liderança Técnica e<br>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500">Gestão Inteligente de Obras</span>
+      </h1>
+      
+      <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-8">
+        Mestre de Obras e Eletrotécnico com sólida experiência em <strong>Subestações de Alta Tensão</strong> e Infraestrutura.
+        <br class="hidden md:block">
+        Utilizo tecnologia própria para eliminar gargalos, otimizar equipes e garantir a precisão técnica no canteiro.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#galeria" class="bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold px-8 py-4 rounded-full hover:shadow-[0_0_20px_rgba(249,115,22,0.6)] transition-all transform hover:-translate-y-1">
+          Ver Portfólio de Obras
+        </a>
+        <a href="#inovacao" class="border border-slate-600 glass text-white font-semibold px-8 py-4 rounded-full hover:bg-white/10 transition-all">
+          Minhas Ferramentas de Gestão
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="sobre" class="py-20 px-4 max-w-6xl mx-auto">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div data-aos="fade-right">
+        <h2 class="text-3xl font-bold mb-6 border-l-4 border-primary pl-4">O Profissional de Campo</h2>
+        <p class="text-slate-300 text-lg leading-relaxed mb-4">
+          Minha formação é o chão de fábrica e a subestação. Como Mestre de Obras e Eletrotécnico, entendo que o sucesso de um projeto depende de três pilares: <strong>Segurança, Qualidade Técnica e Gestão de Pessoas</strong>.
+        </p>
+        <p class="text-slate-300 text-lg leading-relaxed">
+          Meu diferencial não é apenas saber "tocar a obra", mas trazer <strong>inteligência para o processo</strong>. Desenvolvo minhas próprias ferramentas digitais para resolver problemas crônicos de comunicação e controle que planilhas comuns não resolvem.
+        </p>
+        
+        <div class="mt-8 grid grid-cols-2 gap-4">
+          <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700 text-center">
+            <span class="text-3xl font-bold text-white block">10+</span>
+            <span class="text-sm text-slate-400">Anos de Experiência</span>
+          </div>
+          <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700 text-center">
+            <span class="text-3xl font-bold text-primary block">HV</span>
+            <span class="text-sm text-slate-400">Especialista Alta Tensão</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass p-8 rounded-2xl border-t border-slate-700 shadow-xl" data-aos="fade-left">
+        <h3 class="text-xl font-bold mb-6 text-white">Competências Chave</h3>
+        <ul class="space-y-5">
+          <li class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-lg bg-orange-500/20 flex items-center justify-center text-orange-500 text-xl shrink-0">🏗️</div>
+            <div>
+              <h4 class="font-bold text-white">Gestão de Obras</h4>
+              <p class="text-sm text-slate-400">Coordenação de cronograma físico-financeiro, liderança de equipes operacionais e fiscalização de segurança.</p>
+            </div>
+          </li>
+          <li class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-lg bg-yellow-500/20 flex items-center justify-center text-yellow-500 text-xl shrink-0">⚡</div>
+            <div>
+              <h4 class="font-bold text-white">Sistemas Elétricos (SEP)</h4>
+              <p class="text-sm text-slate-400">Técnico em Eletrotécnica com foco em montagem eletromecânica de subestações e linhas de transmissão.</p>
+            </div>
+          </li>
+          <li class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-500 text-xl shrink-0">📈</div>
+            <div>
+              <h4 class="font-bold text-white">Otimização de Processos</h4>
+              <p class="text-sm text-slate-400">Uso de programação (Python) apenas como ferramenta para criar dashboards e relatórios precisos de produtividade.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="experiencia" class="py-20 px-4 bg-slate-900/50">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl font-bold text-center mb-16" data-aos="fade-up">Trajetória Profissional</h2>
+      
+      <div class="relative">
+        <div class="timeline-line h-full"></div>
+
+        <div class="relative md:flex items-center justify-between mb-12 group" data-aos="fade-up">
+          <div class="md:w-5/12 order-1 md:text-right pr-8 pl-8 md:pl-0">
+            <span class="text-primary font-bold text-sm tracking-wider uppercase">Foco Atual</span>
+            <h3 class="text-xl font-bold text-white mt-1">Gestão Técnica & Inovação</h3>
+            <p class="text-slate-400 text-sm mt-2">Setor de Energia e Infraestrutura</p>
+          </div>
+          <div class="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-slate-900 z-10 ml-[14px] md:ml-0"></div>
+          <div class="md:w-5/12 order-1 glass p-6 rounded-xl ml-8 md:ml-0 mt-4 md:mt-0 hover:border-primary/50 transition-colors">
+            <p class="text-slate-300 text-sm">Atuo implementando soluções que unem o campo ao escritório. Desenvolvo sistemas de controle de ponto e medição de obra para garantir transparência e dados reais para a engenharia.</p>
+          </div>
+        </div>
+
+        <div class="relative md:flex items-center justify-between mb-12" data-aos="fade-up" data-aos-delay="100">
+          <div class="md:w-5/12 order-1 md:order-2 pl-8">
+            <span class="text-slate-500 font-bold text-sm tracking-wider uppercase">Experiência Sênior</span>
+            <h3 class="text-xl font-bold text-white mt-1">Mestre de Obras</h3>
+            <p class="text-slate-400 text-sm mt-2">Subestações HV e Civil</p>
+          </div>
+          <div class="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-slate-600 rounded-full border-4 border-slate-900 z-10 ml-[14px] md:ml-0"></div>
+          <div class="md:w-5/12 order-1 md:order-1 glass p-6 rounded-xl ml-8 md:ml-0 mt-4 md:mt-0 text-right md:text-left hover:border-white/30 transition-colors">
+            <p class="text-slate-300 text-sm">Responsável direto pela execução de obras civis e eletromecânicas. Gestão de cronograma, leitura de projetos complexos e liderança de equipes multidisciplinares em campo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="galeria" class="py-20 px-4 max-w-7xl mx-auto">
+    <div class="text-center mb-12" data-aos="fade-down">
+      <h2 class="text-3xl font-bold mb-4">Galeria de Execução</h2>
+      <p class="text-slate-400">Registros de campo: Onde a técnica encontra a prática.</p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px]">
+      <div class="group relative overflow-hidden rounded-xl cursor-pointer md:col-span-2 md:row-span-2" onclick="openLightbox(this)">
+        <img src="obras_imagens/mda.jpeg" class="w-full h-full object-cover transform group-hover:scale-110 transition-duration-500 transition-transform" alt="SE Malha Dágua - Vista Geral">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-100 flex flex-col justify-end p-6">
+          <span class="text-primary font-bold text-sm mb-1">Destaque</span>
+          <h3 class="text-white font-bold text-xl">SE Malha D'água (CE)</h3>
+          <p class="text-slate-300 text-xs mt-1">Infraestrutura Civil e Montagem</p>
+        </div>
+      </div>
+
+      <div class="group relative overflow-hidden rounded-xl cursor-pointer" onclick="openLightbox(this)">
+        <img src="obras_imagens/bda6.jpg" class="w-full h-full object-cover transform group-hover:scale-110 transition-duration-500 transition-transform" alt="Fundação e Concretagem">
+      </div>
+
+      <div class="group relative overflow-hidden rounded-xl cursor-pointer" onclick="openLightbox(this)">
+        <img src="obras_imagens/mda2.jpeg" class="w-full h-full object-cover transform group-hover:scale-110 transition-duration-500 transition-transform" alt="Montagem Eletromecânica">
+      </div>
+
+      <div class="group relative overflow-hidden rounded-xl cursor-pointer" onclick="openLightbox(this)">
+        <img src="obras_imagens/bda10.jpg" class="w-full h-full object-cover transform group-hover:scale-110 transition-duration-500 transition-transform" alt="Estruturas Metálicas">
+      </div>
+
+      <div class="group relative overflow-hidden rounded-xl cursor-pointer" onclick="openLightbox(this)">
+        <img src="obras_imagens/bomjardin.jpeg" class="w-full h-full object-cover transform group-hover:scale-110 transition-duration-500 transition-transform" alt="Terraplanagem">
+      </div>
+    </div>
+  </section>
+
+  <section id="inovacao" class="py-20 px-4 bg-slate-800/30 border-y border-slate-800">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold mb-4">Tecnologia Aplicada à Engenharia</h2>
+        <p class="text-slate-400 max-w-2xl mx-auto">
+          Minha experiência em programação serve a um único propósito: <strong>Melhorar a gestão da obra</strong>. 
+          Desenvolvi estas ferramentas para uso próprio e da equipe, visando eliminar papel e erros humanos.
+        </p>
+      </div>
+
+      <div class="swiper mySwiper pb-12">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide relative group">
+            <img src="obras_imagens/sistema1.png" alt="Sistema 1" class="rounded-xl w-full object-cover h-64 border border-slate-700">
+            <div class="absolute bottom-0 left-0 right-0 bg-slate-900/90 p-4 rounded-b-xl border-t border-slate-700">
+              <p class="text-white font-bold text-sm">Dashboard de Produtividade</p>
+            </div>
+          </div>
+          <div class="swiper-slide relative group">
+              <img src="obras_imagens/sistema2.png" alt="Sistema 2" class="rounded-xl w-full object-cover h-64 border border-slate-700">
+              <div class="absolute bottom-0 left-0 right-0 bg-slate-900/90 p-4 rounded-b-xl border-t border-slate-700">
+                  <p class="text-white font-bold text-sm">Controle de Ponto Digital</p>
+              </div>
+          </div>
+          <div class="swiper-slide"><img src="obras_imagens/sistema3.png" class="rounded-xl h-64 object-cover border border-slate-700"></div>
+          <div class="swiper-slide"><img src="obras_imagens/sistema5.png" class="rounded-xl h-64 object-cover border border-slate-700"></div>
+          <div class="swiper-slide"><img src="obras_imagens/sistema6.png" class="rounded-xl h-64 object-cover border border-slate-700"></div>
+        </div>
+        <div class="swiper-pagination !bottom-0"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="calculadoras" class="py-20 px-4">
+    <div class="max-w-6xl mx-auto text-center">
+      <h2 class="text-2xl font-bold mb-8 text-slate-300">Ferramentas de Cálculo Rápido</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <a href="calculadoras/callcivil.html" target="_blank" class="block bg-slate-800 p-6 rounded-lg hover:bg-slate-700 transition-colors border border-slate-700">
+            <h3 class="text-xl font-bold text-white mb-1">🏗️ Civil</h3>
+            <p class="text-slate-400 text-xs">Materiais e Concreto</p>
+        </a>
+        <a href="calculadoras/calleletrica.html" target="_blank" class="block bg-slate-800 p-6 rounded-lg hover:bg-slate-700 transition-colors border border-slate-700">
+            <h3 class="text-xl font-bold text-white mb-1">⚡ Elétrica</h3>
+            <p class="text-slate-400 text-xs">Dimensionamento e Carga</p>
+        </a>
+        <a href="calculadoras/callterraplan.html" target="_blank" class="block bg-slate-800 p-6 rounded-lg hover:bg-slate-700 transition-colors border border-slate-700">
+            <h3 class="text-xl font-bold text-white mb-1">🚜 Terraplanagem</h3>
+            <p class="text-slate-400 text-xs">Volumes e Movimentação</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div id="lightbox" class="fixed inset-0 z-[999] bg-black/95 hidden items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+    <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white text-4xl hover:text-primary transition-colors">&times;</button>
+    <img id="lightboxImage" src="" class="max-h-[90vh] max-w-full rounded-lg shadow-2xl">
+  </div>
+
+  <section id="contato" class="py-24 px-4 text-center bg-gradient-to-b from-transparent to-slate-900/80">
+    <div class="max-w-2xl mx-auto" data-aos="fade-up">
+      <h2 class="text-3xl font-bold mb-6 text-white">Pronto para otimizar sua obra?</h2>
+      <p class="text-slate-400 mb-8">
+        Disponível para gestão de obras, consultoria técnica e implementação de eficiência no canteiro.
+      </p>
+      <a href="mailto:francelinotees@gmail.com" class="inline-block bg-primary text-white font-bold px-8 py-4 rounded-full hover:bg-orange-600 transition-all">
+         Entrar em Contato
+      </a>
+      <div class="mt-12 pt-8 border-t border-slate-800 text-slate-600 text-sm">
+        <p>© <span id="year"></span> Francelino Neto Santos</p>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  
+  <script>
+    AOS.init({ once: true, offset: 80, duration: 800 });
+    document.getElementById('year').textContent = new Date().getFullYear();
+    
+    new Swiper(".mySwiper", {
+      slidesPerView: 1, spaceBetween: 20, loop: true,
+      autoplay: { delay: 3000, disableOnInteraction: false },
+      pagination: { el: ".swiper-pagination", clickable: true },
+      breakpoints: { 640: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } }
     });
 
-    function closeLightbox(){lightbox.style.display='none';}
-
-    // Menu responsivo
     const menuBtn = document.getElementById('menu-btn');
     const menu = document.getElementById('menu');
+    menuBtn.addEventListener('click', () => menu.classList.toggle('hidden'));
+    document.querySelectorAll('#menu a').forEach(link => link.addEventListener('click', () => menu.classList.add('hidden')));
 
-    menuBtn.addEventListener('click', () => {
-      menu.classList.toggle('hidden');
-    });
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImage');
+    function openLightbox(element) {
+      const img = element.querySelector('img');
+      if(img) { lightboxImg.src = img.src; lightbox.style.display = 'flex'; setTimeout(() => lightbox.style.opacity = '1', 10); }
+    }
+    function closeLightbox() { lightbox.style.opacity = '0'; setTimeout(() => lightbox.style.display = 'none', 300); }
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
   </script>
 </body>
 </html>
